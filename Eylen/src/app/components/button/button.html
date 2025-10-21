@@ -1,0 +1,15 @@
+@if (type === 'button') {
+  <button 
+    class="text-white px-5 py-2 rounded-full transition-colors duration-200 hover:opacity-90"
+    [style.background-color]="color"
+    (click)="handleClick()">
+    {{ text }}
+  </button>
+} @else {
+  <a 
+    [href]="link"
+    class="text-white px-5 py-2 rounded-full transition-colors duration-200 hover:opacity-90 inline-block text-center"
+    [style.background-color]="color">
+    {{ text }}
+  </a>
+}

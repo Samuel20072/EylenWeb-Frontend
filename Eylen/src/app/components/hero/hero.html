@@ -1,0 +1,46 @@
+<section class="flex flex-col md:flex-row justify-center items-center bg-[#f9dada] px-8 py-12 max-w-7xl mx-auto">
+    <!-- Texto -->
+    <div class="md:w-1/2 space-y-4 text-center md:text-left">
+      <h2 class="text-5xl md:text-6xl font-regular font-playfair text-[#D4AF37] leading-tight">
+        Descubre el poder <br> del baile consciente
+      </h2>
+      <div class="max-w-lg mx-auto md:mx-0">
+        <p class="text-[#310D09] font-poppins font-medium text-lg">
+          El baile consciente es un espacio para liberar tensiones, reconectar con tu esencia femenina y encontrar soluciones a través del movimiento y la expresión del cuerpo.
+        </p>
+      </div>
+      <div class="flex justify-center md:justify-start pt-2">
+        <app-button 
+        text="Descubrir mi poder" 
+        color="#C1121F" 
+        hoverColor="#a32f2f"
+        type="button"
+        (onClick)="onLoginClick()">
+      </app-button>
+      </div>
+      <!-- Testimonios -->
+      <div class="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start">
+        <app-testimonial
+          name="Laura"
+          text="El baile consciente me ayuda mucho con el estrés"
+          image="https://randomuser.me/api/portraits/women/68.jpg">
+        </app-testimonial>
+  
+        <app-testimonial
+          name="Sofía"
+          text="Me conecta con mi cuerpo"
+          image="https://randomuser.me/api/portraits/women/45.jpg">
+        </app-testimonial>
+      </div>
+    </div>
+  
+    <!-- Imagen -->
+    <div class="mt-8 md:mt-0 md:w-1/2 flex justify-center">
+      <img
+        src="../../../assets/images/hero1.png"
+        alt="Eylen bailando"
+        class="h-[480px] md:h-[530px] rounded-2xl object-cover "
+      />
+    </div>
+  </section>
+  
