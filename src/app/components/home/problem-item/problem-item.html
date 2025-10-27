@@ -1,0 +1,57 @@
+<div
+  class="problem-item flex flex-col md:flex-row items-center justify-between mb-30 relative"
+  [ngClass]="{
+    'md:flex-row-reverse md:pl-32': !isLeft,
+    'md:pr-32': isLeft
+  }"
+>
+  <!-- Contenido del problema -->
+  <div
+    class="flex-col px-50 z-10 mb-6 md:mb-0 text-left md:text-left"
+    [ngClass]="{ 'md:text-left': !isLeft }"
+  >
+    <!-- Número del problema -->
+    <div
+      class="text-3xl font-bold text-[#C1121F] font-playfair mb-1 uppercase tracking-wider"
+    >
+      {{ problemNumber }}
+    </div>
+
+    <!-- Título del problema -->
+    <h3
+      class="text-x md:text-6xl font-extrabold font-playfair text-[#D4AF37] mb-3 leading-snug max-w-[489px]"
+    >
+      {{ title }}
+    </h3>
+
+    <!-- Descripción -->
+    <p
+      class="text-xl text-[#310D09] font-medium leading-relaxed max-w-xs mx-auto md:mx-0"
+    >
+      {{ description }}
+    </p>
+
+    <!-- Imagen con cuadro de fondo rotado -->
+    <div class="relative w-[415px] h-[415px] mt-8">
+      <div
+        class="absolute inset-0 bg-[#FFB1B8] shadow-lg shadow-black rounded-xl transition-transform duration-500"
+        [ngStyle]="{
+          transform:
+            'rotate(' +
+            rotation +
+            'deg) scale(0.8) translate(' +
+            offsetX +
+            'px,' +
+            offsetY +
+            'px)'
+        }"
+      ></div>
+
+      <img
+        [src]="imageSrc"
+        [alt]="title"
+        class="problem-image relative w-[415px] h-[415px] object-cover rounded-xl transition-transform duration-500"
+      />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<section class="py-16 relative overflow-hidden">
+  <div class="max-w-6xl mx-auto px-6 relative">
+    <!-- Título -->
+    <div class="text-center mb-16">
+      <p class="text-2xl text-[#340803] font-playfair font-extrabold">
+        El baile consciente da la solución a todo
+      </p>
+      <p class="text-sm text-[#310D09] font-playfair font-semibold">
+        8 problemas que toda mujer sufre
+      </p>
+    </div>
+
+    <!-- Timeline -->
+    <div class="relative max-w-8xl mx-auto">
+      <!-- Línea dorada -->
+      <div
+        class="absolute left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-[#D4AF37] to-[#D4AF37] transform -translate-x-1/2 z-0"
+      ></div>
+
+      <!-- Contenedor de problemas -->
+      <div class="relative z-10 space-y-20">
+        <ng-container *ngFor="let problem of problems">
+          <div class="relative">
+            <!-- Círculo dorado en el punto del problema -->
+            <div
+              class="absolute left-1/2 transform -translate-x-1/2 w-7 h-7 bg-[#D4AF37] rounded-full z-20"
+              style="top: 50%; transform: translate(-50%, -50%)"
+            ></div>
+
+            <!-- Componente del problema -->
+            <app-problem-item
+            [problemNumber]="problem.number"
+            [title]="problem.title"
+            [description]="problem.description"
+            [imageSrc]="problem.imageSrc"
+            [isLeft]="problem.isLeft"
+            [rotation]="problem.rotation"
+            [offsetX]="problem.offsetX"
+            [offsetY]="problem.offsetY"
+          ></app-problem-item>
+          
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</section>

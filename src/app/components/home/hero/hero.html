@@ -1,0 +1,70 @@
+<section
+  class="flex flex-col md:flex-row justify-center items-center bg-[#f9dada] px-10 py-16 max-w-7xl ml-auto mr-6 text-center overflow-hidden"
+>
+  <!-- Texto -->
+  <div
+    class="md:w-1/2 space-y-4 text-center md:text-left"
+    gsap-fade
+  >
+    <h2
+      class="text-5xl md:text-6xl font-playfair text-[#D4AF37] leading-tight font-extrabold drop-shadow-md"
+      gsap-zoom
+    >
+      Descubre el poder <br />
+      del baile consciente
+    </h2>
+
+    <div class="max-w-lg mx-auto md:mx-0" gsap-slide-up>
+      <p
+        class="text-[#310D09] font-poppins font-medium text-lg leading-relaxed"
+      >
+        El baile consciente es un espacio para liberar tensiones, reconectar
+        con tu esencia femenina y encontrar soluciones a través del movimiento
+        y la expresión del cuerpo.
+      </p>
+    </div>
+
+    <div class="flex justify-center md:justify-start pt-4" gsap-fade-delay>
+      <app-button
+        text="Descubrir mi poder"
+        color="#C1121F"
+        hoverColor="#a32f2f"
+        type="button"
+        (onClick)="onLoginClick()"
+      ></app-button>
+    </div>
+
+    <!-- Testimonios -->
+    <div
+      class="flex flex-col sm:flex-row gap-4 pt-6 justify-center md:justify-start"
+      gsap-stagger
+    >
+      <app-testimonial
+        name="Laura"
+        text="El baile consciente me ayudó a liberar mi estrés."
+        image="https://randomuser.me/api/portraits/women/68.jpg"
+      ></app-testimonial>
+
+      <app-testimonial
+        name="Sofía"
+        text="Gracias al baile consciente me siento más conectada conmigo"
+        image="https://randomuser.me/api/portraits/women/45.jpg"
+      ></app-testimonial>
+    </div>
+  </div>
+
+  <!-- Imagen -->
+  <div
+    class="mt-8 md:mt-0 md:w-1/2 flex justify-center relative"
+    gsap-parallax
+  >
+    <img
+      src="../../../assets/images/hero1.png"
+      alt="Eylen bailando"
+      class="h-[480px] md:h-[530px] rounded-2xl object-cover  transform transition-transform duration-700"
+    />
+    <div
+      class="absolute inset-0 bg-gradient-to-tr from-[#C1121F]/5 to-transparent rounded-2xl"
+    ></div>
+  </div>
+</section>

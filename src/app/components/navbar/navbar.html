@@ -1,0 +1,19 @@
+<nav class="flex justify-around items-center py-5 px-30 bg-[#f9dada]">
+    <h1 class="text-2xl font-regular text-[#340803] font-playfair">Eylen</h1>
+  
+    <ul class="flex gap-8 text-[#340803] font-bold">
+      <app-navbar-item name="INICIO" link="/"></app-navbar-item>
+      <app-navbar-item name="CLASES" link="/clases"></app-navbar-item>
+      <app-navbar-item name="SOBRE MÍ" link="/sobre-mi"></app-navbar-item>
+      <app-navbar-item name="CONTACTO" link="/contacto"></app-navbar-item>
+    </ul>
+  
+    <app-button 
+      text="Iniciar sesión" 
+      color="#C1121F" 
+      hoverColor="#a32f2f"
+      type="button"
+      (onClick)="onLoginClick()">
+    </app-button>
+  </nav>
+  

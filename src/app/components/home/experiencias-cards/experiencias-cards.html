@@ -1,0 +1,16 @@
+<div class="exp-card bg-[#c10f1a] text-white rounded-2xl shadow-2xl p-8 flex flex-col justify-between items-center w-72 h-96 transform-gpu transition-all duration-500">
+  <!-- Título -->
+  <h3 class="exp-title text-2xl font-bold text-center mb-4 font-serif tracking-wide text-[#FFD700]">
+    {{ title }}
+  </h3>
+
+  <!-- Icono -->
+  <div class="exp-icon flex justify-center mb-4">
+    <img [src]="icon" alt="icono" class="w-20 h-20 drop-shadow-lg transition-transform duration-300 hover:scale-110">
+  </div>
+
+  <!-- Contenido -->
+  <p class="exp-text text-center text-lg leading-relaxed font-poppins text-[#fffaf2]">
+    {{ content }}
+  </p>
+</div>

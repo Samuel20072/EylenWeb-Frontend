@@ -1,0 +1,15 @@
+<section class="bg-[#FFB1B8] py-20 px-6 text-center">
+  <h2 class="text-3xl md:text-4xl font-bold text-[#421010] mb-12">
+    Qué vivirás en una clase
+  </h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 max-w-6xl mx-auto">
+    <app-icons-card
+      *ngFor="let card of cards"
+      [icon]="card.icon"
+      [image]="card.image"
+      [title]="card.title"
+      [description]="card.description"
+    ></app-icons-card>
+  </div>
+</section>

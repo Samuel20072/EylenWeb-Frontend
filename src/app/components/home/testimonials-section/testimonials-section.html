@@ -1,0 +1,20 @@
+<section class=" py-16">
+  <div class="container mx-auto px-4">
+    <!-- Título -->
+    <h2 class="text-2xl md:text-3xl font-playfair text-[#310D09] text-center mb-12">
+      Voces reales de mujeres como tú
+    </h2>
+    
+    <!-- Grid de testimonios -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <app-testimonial-video
+        *ngFor="let testimonial of testimonials"
+        [videoSrc]="testimonial.videoSrc"
+        [overlayText]="testimonial.overlayText"
+        [testimonialText]="testimonial.testimonialText"
+        [personName]="testimonial.personName"
+        [personAge]="testimonial.personAge">
+      </app-testimonial-video>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,39 @@
+
+<section
+  class="relative flex flex-col items-center justify-center text-center rounded-3xl shadow-2xl overflow-hidden bg-gradient-to-b from-[#1a0000] to-[#420000] text-white py-16 px-6 md:px-12 lg:px-24 mx-auto max-w-5xl "
+>
+  <!-- Fondo con imagen borrosa -->
+  <div
+    class="absolute inset-0 bg-[url('/../assets/images/hero2.png')] bg-cover bg-center blur-sm"
+  ></div>
+
+  <!-- Capa de color oscuro para contraste -->
+  <div class="absolute inset-0 bg-black/50"></div>
+
+  <!-- Contenido principal -->
+  <div class="relative z-10 space-y-6">
+    <h1
+      class="hero-text text-3xl md:text-5xl font-playfair font-semibold leading-snug text-[#fdfdfd] drop-shadow-lg"
+    >
+      Conecta con tu cuerpo, libera tu mente <br />
+      y baila desde el alma.
+    </h1>
+
+    <p
+      class="hero-subtext text-sm md:text-lg text-gray-200 font-poppins max-w-2xl mx-auto"
+    >
+      Clases presenciales en <span class="text-[#FFD700] font-semibold">Armenia</span>
+      y virtual desde cualquier lugar del mundo
+    </p>
+    <div class="px-6 py-3 ">
+        <app-button 
+        text="  Reserva tu clase" 
+        color="#C1121F" 
+        hoverColor="#a10f1a"
+        type="button"
+        (onClick)="onReserveClick()">
+      </app-button>
+    </div>
+
+  </div>
+</section>

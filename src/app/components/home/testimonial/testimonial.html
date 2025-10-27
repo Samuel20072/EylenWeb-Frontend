@@ -1,0 +1,23 @@
+<div
+  class="flex items-start gap-3 w-[315px] bg-white rounded-2xl px-4 py-4 shadow-md font-poppins border border-[#E5E7EB] relative hover:scale-105 transition-transform duration-300"
+>
+  <!-- Imagen -->
+  <img
+    [src]="image"
+    alt="Usuario"
+    class="w-12 h-12 rounded-full object-cover border border-gray-200 mt-1"
+  />
+
+  <!-- Contenido -->
+  <div class="flex flex-col relative w-full pr-8">
+    <h4 class="text-[#1A1A1A] text-sm font-medium leading-tight">{{ name }}</h4>
+    <p class="text-xs text-[#434343] leading-snug">
+      {{ text }}
+    </p>
+
+    <!-- Estrellas -->
+    <div class="text-[#C6A15B] text-sm absolute bottom-0 right-0">
+      ★★★★★
+    </div>
+  </div>
+</div>

@@ -1,0 +1,15 @@
+<section class=" py-16 relative">
+  <!-- Franja superior más oscura -->
+  <div class="absolute top-0 left-0 right-0 h-2 bg-[#F4A6AB]"></div>
+  
+  <div class="max-w-6xl mx-auto px-8 pt-8 ">
+    <!-- Grid de cards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-[#340803]">
+      <app-mission-vision-card
+        *ngFor="let card of cards"
+        [title]="card.title"
+        [content]="card.content">
+      </app-mission-vision-card>
+    </div>
+  </div>
+</section>
