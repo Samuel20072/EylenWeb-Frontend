@@ -6,14 +6,17 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 @Component({
   selector: 'app-icons-card',
   standalone: true,
-  imports: [CommonModule], // 👈 Para usar *ngIf
+  imports: [CommonModule],
   templateUrl: './icons-card.html',
 })
 export class IconsCard implements AfterViewInit {
+  @Input() style?: string;
   @Input() icon?: string; // 👈 Ahora opcional
   @Input() image?: string; // 👈 Nuevo: permite usar imagen
   @Input() title!: string;
+  @Input() backgroundColor?: string;
   @Input() description!: string;
+  @Input() iconBackgroundColor?: string;
 
   constructor(private el: ElementRef) {
     gsap.registerPlugin(ScrollTrigger);
