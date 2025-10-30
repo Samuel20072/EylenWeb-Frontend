@@ -3,23 +3,27 @@ import { Home } from './pages/home/home';
 import { Class } from './pages/class/class';
 import { SobreMi } from './pages/sobre-mi/sobre-mi';
 import { Contacto } from './pages/contacto/contacto';
+import { Register } from './pages/register/register';
 
 export const routes: Routes = [
-
-    {
-        path: '',
-        component: Home
-    },
-    {
-        path: 'clases',
-        component: Class
-    },
-    {
-        path: 'sobre-mi',
-        component: SobreMi
-    },
-    {
-        path: 'contacto',
-        component: Contacto 
-    }
+  {
+    path: '',
+    component: Home,
+  },
+  {
+    path: 'clases',
+    component: Class,
+  },
+  {
+    path: 'sobre-mi',
+    component: SobreMi,
+  },
+  {
+    path: 'contacto',
+    component: Contacto,
+  },
+  {
+    path: 'registro',
+    component: Register,
+  },
 ];
