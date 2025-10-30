@@ -1,0 +1,47 @@
+<div class="bg-white rounded-2xl shadow-md p-6 md:p-8 w-full max-w-md mx-auto">
+    <h2 class="text-xl font-semibold text-[#3b0c0c] mb-2">Déjame tu mensaje</h2>
+    <p class="text-sm text-gray-700 mb-6">
+      Te responderé lo antes posible. Si prefieres, también puedes escribirme directamente a:
+      <span class="font-medium text-[#b11b1b]">eylen@gmail.com</span>
+    </p>
+  
+    <form class="flex flex-col gap-4" (ngSubmit)="handleSubmit()">
+      <app-custom-input-component
+        label="Nombre Completo"
+        placeholder="Ingresa tu Nombre completo..."
+      ></app-custom-input-component>
+  
+      <app-custom-input-component
+        label="Correo electrónico"
+        placeholder="Ingresa tu Correo electrónico..."
+        type="email"
+      ></app-custom-input-component>
+  
+      <app-custom-input-component
+        label="Asunto o tipo de consulta"
+        placeholder="Quiero agendar una clase"
+      ></app-custom-input-component>
+  
+      <div class="flex flex-col text-left">
+        <label class="font-semibold text-[#3b0c0c] text-sm mb-1">Mensaje</label>
+        <textarea
+          placeholder="Escribe tu mensaje..."
+          class="border border-[#b11b1b] rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#b11b1b] h-24 resize-none"
+        ></textarea>
+      </div>
+  
+      <app-custom-input-component
+        label="Teléfono o WhatsApp (Opcional)"
+        placeholder="Ej: +57 300 000 0000"
+        type="text"
+      ></app-custom-input-component>
+  
+      <button
+        type="submit"
+        class="bg-[#b11b1b] text-white py-3 rounded-full font-semibold mt-2 hover:bg-[#8d1212] transition-all duration-300"
+      >
+        Descubre mis clases
+      </button>
+    </form>
+  </div>
+  

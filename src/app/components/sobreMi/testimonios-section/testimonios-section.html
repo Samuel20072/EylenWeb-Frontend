@@ -1,0 +1,19 @@
+<section class="py-20 px-6 md:px-16 text-center">
+    <h2 class="text-3xl md:text-4xl font-bold text-[#421010] font-playfair mb-2">
+      Testimonios
+    </h2>
+    <p class="text-lg text-[#421010]/80 mb-14 italic">“Lo que dicen mis alumnas”</p>
+  
+    <div
+      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 justify-items-center"
+    >
+      <app-testimonios-card
+        *ngFor="let t of testimonios"
+        [name]="t.name"
+        [text]="t.text"
+        [image]="t.image"
+        class="testimonial-card"
+      ></app-testimonios-card>
+    </div>
+  </section>
+  
