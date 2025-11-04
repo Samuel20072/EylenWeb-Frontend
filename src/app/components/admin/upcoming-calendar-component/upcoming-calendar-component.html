@@ -1,23 +1,37 @@
 <div #card class="bg-white rounded-xl p-4 shadow-md w-full">
-    <div class="flex items-center justify-between mb-3">
-      <h3 class="text-sm font-medium text-[#5b1b1b]">Próximas clases</h3>
-      <div class="flex items-center gap-2">
-        <button class="p-1 rounded-full bg-red-600 text-white">‹</button>
-        <span class="text-sm">{{ month }}</span>
-        <button class="p-1 rounded-full bg-red-600 text-white">›</button>
-      </div>
-    </div>
-  
-    <div class="grid grid-cols-7 gap-2 text-center">
-      <div class="text-xs text-gray-400">Dom</div><div class="text-xs text-gray-400">Lun</div><div class="text-xs text-gray-400">Mar</div><div class="text-xs text-gray-400">Mie</div><div class="text-xs text-gray-400">Jue</div><div class="text-xs text-gray-400">Vie</div><div class="text-xs text-gray-400">Sab</div>
-      <ng-container *ngFor="let d of days">
-        <button
-          class="py-1 rounded-full text-sm transition"
-          [ngClass]="d === selected ? 'bg-red-600 text-white' : 'bg-red-50 text-[#5b1b1b]'"
-        >
-          {{ d }}
-        </button>
-      </ng-container>
+  <div class="flex items-center justify-between mb-3">
+    <h3 class="text-sm font-medium text-[#340803]">Próximas clases</h3>
+    <div class="flex items-center gap-2">
+      <button class="w-8 h-8 flex items-center justify-center rounded-full text-sm transition duration-200 bg-[#C1121F] text-white">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+      <span class="text-sm text-[#310D09]">{{ month }}</span>
+      <button class="w-8 h-8 flex items-center justify-center rounded-full text-sm transition duration-200 bg-[#C1121F] text-white">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
     </div>
   </div>
-  
+
+  <div class="grid grid-cols-7 gap-2 text-center">
+    <div class="text-xs text-[#310D09]">Dom</div>
+    <div class="text-xs text-[#310D09]">Lun</div>
+    <div class="text-xs text-[#310D09]">Mar</div>
+    <div class="text-xs text-[#310D09]">Mie</div>
+    <div class="text-xs text-[#310D09]">Jue</div>
+    <div class="text-xs text-[#310D09]">Vie</div>
+    <div class="text-xs text-[#310D09]">Sab</div>
+
+    <ng-container *ngFor="let d of days">
+      <button
+        class="w-8 h-8 flex items-center justify-center rounded-full text-sm transition duration-200"
+        [ngClass]="
+          d === selected
+            ? 'bg-[#C1121F] text-[#F9F4F1]'
+            : 'bg-[#FFB1B8] text-[#C1121F]'
+        "
+      >
+        {{ d }}
+      </button>
+    </ng-container>
+  </div>
+</div>

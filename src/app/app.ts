@@ -1,15 +1,27 @@
 import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { Navbar } from './components/navbar/navbar';
-import {Footer} from './components/footer/footer'
+import { Footer } from './components/footer/footer';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  
-  imports: [RouterOutlet, Navbar,Footer],
+  standalone: true,
+  imports: [RouterOutlet, Navbar, Footer, CommonModule],
   templateUrl: './app.html',
-  styleUrl: './app.css'
+  styleUrl: './app.css',
 })
 export class App {
   protected readonly title = signal('Eylen');
+  showLayout = signal(true);
+
+  constructor(private router: Router) {
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        // ✅ Si la URL contiene "/admin", ocultamos navbar y footer
+        this.showLayout.set(!event.url.includes('/admin'));
+      });
+  }
 }

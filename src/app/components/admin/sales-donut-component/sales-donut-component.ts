@@ -11,10 +11,10 @@ import { gsap } from 'gsap';
 export class SalesDonutComponent implements AfterViewInit {
   @ViewChild('card') card!: ElementRef;
   data = [
-    { label: 'Search', value: 30, color: '#9f1239' },
-    { label: 'Email', value: 20, color: '#f472b6' },
-    { label: 'Direct', value: 25, color: '#fb7185' },
-    { label: 'Ads', value: 25, color: '#fca5a5' },
+    { label: 'Enero', value: 30, color: '#9f1239' },
+    { label: 'Febrero', value: 20, color: '#f472b6' },
+    { label: 'Marzo', value: 25, color: '#fb7185' },
+    { label: 'Abril', value: 25, color: '#fca5a5' },
   ];
 
   total = this.data.reduce((s, d) => s + d.value, 0);

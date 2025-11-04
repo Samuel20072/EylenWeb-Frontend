@@ -14,6 +14,8 @@ export class UsersListComponent implements AfterViewInit {
     { name: 'Angelica', package: 'Despertar', nextClass: '10/09/2025', remaining: 6, progress: 6/12 },
     { name: 'María', package: 'Renacer', nextClass: '15/09/2025', remaining: 3, progress: 3/12 },
     { name: 'Catalina', package: 'Diosa', nextClass: '18/09/2025', remaining: 0, progress: 12/12 },
+    { name: 'Catalina', package: 'Diosa', nextClass: '18/09/2025', remaining: 0, progress: 12/12 },
+    { name: 'Catalina', package: 'Diosa', nextClass: '18/09/2025', remaining: 0, progress: 12/12 },
   ];
 
   ngAfterViewInit() {

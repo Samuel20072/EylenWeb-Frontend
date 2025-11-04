@@ -9,10 +9,10 @@ import { CommonModule } from '@angular/common';
 })
 export class AdminSidebarComponent {
   items = [
-    { icon: '📊', label: 'Resumen' },
-    { icon: '🛍️', label: 'Paquetes' },
-    { icon: '👥', label: 'Usuarios' },
-    { icon: '📅', label: 'Clases' },
-    { icon: '⚙️', label: 'Ajustes' },
+    { icon: 'fa-solid fa-chart-line', label: 'Resumen' },
+    { icon: 'fa-solid fa-box', label: 'Paquetes' },
+    { icon: 'fa-solid fa-users', label: 'Usuarios' },
+    { icon: 'fa-solid fa-calendar-days', label: 'Clases' },
+    { icon: 'fa-solid fa-gear', label: 'Ajustes' },
   ];
 }
