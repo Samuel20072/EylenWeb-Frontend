@@ -13,6 +13,14 @@
       [buttonColor]="pack.buttonColor"
       [buttonTextColor]="pack.buttonTextColor"
       [backgroundColor]="pack.backgroundColor"
+      (selectPack)="openModal(pack)"
     ></app-paquetes-cards>
   </div>
+
+  <!-- ✅ Modal -->
+  <app-form-modal
+  [isOpen]="isModalOpen"
+  [selectedPackage]="selectedPackage"
+  (close)="isModalOpen = false"
+></app-form-modal>
 </section>

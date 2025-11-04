@@ -1,0 +1,13 @@
+<div #block class="bg-white rounded-xl p-4 shadow-md w-full">
+    <h3 class="text-sm font-medium text-[#5b1b1b] mb-3">Paquetes más vendidos</h3>
+    <ul class="space-y-2">
+      <li *ngFor="let p of packs" class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+        <div>
+          <div class="font-semibold text-sm">{{ p.title }}</div>
+          <div class="text-xs text-gray-500">{{ p.users }} Usuarios</div>
+        </div>
+        <div class="text-sm font-medium">Total: {{ p.total | number }} cop</div>
+      </li>
+    </ul>
+  </div>
+  

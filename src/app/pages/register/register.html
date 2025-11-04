@@ -1,8 +1,8 @@
 <div
-  class="min-h-screen flex items-center justify-center bg-pink-200 p-6 overflow-hidden"
+  class="min-h-screen flex items-center justify-center p-6 overflow-hidden"
 >
   <div
-    class="grid grid-cols-1 md:grid-cols-2 bg-white/30 rounded-2xl shadow-lg max-w-5xl w-full backdrop-blur-md"
+    class="grid grid-cols-1 md:grid-cols-2 rounded-2xl  max-w-5xl w-full backdrop-blur-md"
   >
     <!-- Formulario -->
     <div
@@ -11,63 +11,53 @@
     >
       <a
         routerLink="/"
-        class="text-sm mb-4 text-gray-800 hover:underline self-start"
+        class="text-sm mb-4 text-[#310D09]  self-start"
       >
         Volver al inicio
       </a>
 
-      <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-center">
+      <h2
+        class="text-2xl md:text-3xl font-playfair font-extrabold text-[#310D09] mb-6 text-center"
+      >
         REGISTRO
       </h2>
 
-      <form class="flex flex-col gap-4 w-full max-w-sm">
-        <div class="form-element">
-          <app-custom-input-component
-            label="Nombre Completo"
-            placeholder="Ingresa tu Nombre completo..."
-          ></app-custom-input-component>
-        </div>
+      <form class="flex flex-col gap-3 w-full max-w-sm">
+        <app-custom-input-component
+          label="Nombre Completo"
+          placeholder="Ingresa tu Nombre completo..."
+        ></app-custom-input-component>
 
-        <div class="form-element">
-          <app-custom-input-component
-            label="Correo electrónico"
-            placeholder="Ingresa tu correo electrónico..."
-            type="email"
-          ></app-custom-input-component>
-        </div>
+        <app-custom-input-component
+          label="Correo electrónico"
+          placeholder="Ingresa tu correo electrónico..."
+          type="email"
+        ></app-custom-input-component>
 
-        <div class="form-element">
-          <app-custom-input-component
-            label="Contraseña"
-            placeholder="Ingresa tu Contraseña..."
-            type="password"
-          ></app-custom-input-component>
-        </div>
+        <app-custom-input-component
+          label="Contraseña"
+          placeholder="Ingresa tu Contraseña..."
+          type="password"
+        ></app-custom-input-component>
 
-        <div class="form-element">
-          <app-custom-input-component
-            label="Confirmar Contraseña"
-            placeholder="Confirma tu Contraseña..."
-            type="password"
-          ></app-custom-input-component>
-        </div>
+        <app-custom-input-component
+          label="Confirmar Contraseña"
+          placeholder="Confirma tu Contraseña..."
+          type="password"
+        ></app-custom-input-component>
 
-        <div class="form-element">
-          <app-custom-input-component
-            label="Teléfono"
-            placeholder="Ingresa tu Teléfono..."
-            type="tel"
-          ></app-custom-input-component>
-        </div>
+        <app-custom-input-component
+          label="Teléfono"
+          placeholder="Ingresa tu Teléfono..."
+          type="tel"
+        ></app-custom-input-component>
 
-        <div class="form-element">
-          <app-custom-input-component
-            label="Ubicación"
-            placeholder="Ingresa tu Ciudad..."
-          ></app-custom-input-component>
-        </div>
+        <app-custom-input-component
+          label="Ubicación"
+          placeholder="Ingresa tu Ciudad..."
+        ></app-custom-input-component>
 
-        <div class="form-element">
+        <div>
           <label class="block font-semibold text-gray-800 mb-1"
             >Fecha de nacimiento</label
           >
@@ -78,9 +68,10 @@
           />
         </div>
 
+        <!-- 🔹 Botón ajustado -->
         <button
           type="submit"
-          class="form-element bg-red-600 text-white py-2 rounded-full mt-4 hover:scale-105 hover:bg-red-700 transition-transform duration-300"
+          class="bg-[#C1121F] text-white py-2 rounded-full font-semibold hover:scale-105 hover:bg-red-700 transition-transform duration-300 mt-2"
         >
           Registrarme
         </button>
@@ -88,14 +79,11 @@
     </div>
 
     <!-- Imagen -->
-    <div
-      id="image-section"
-      class="flex justify-center items-center p-6 animate-fade-in-right"
-    >
+    <div id="image-section" class="flex justify-center items-center p-6">
       <img
         src="../../../assets/images/eylenLogin.png"
         alt="Imagen de registro"
-        class="rounded-2xl border-2 border-blue-200 shadow-md object-cover max-h-[500px] w-full"
+        class="rounded-2xl border-2 shadow-md object-cover max-h-[800px] w-full"
       />
     </div>
   </div>

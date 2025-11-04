@@ -1,0 +1,13 @@
+<aside class="flex flex-col gap-4 items-center p-3">
+    <div class="mb-4">
+      <div class="w-12 h-12 rounded-full bg-red-600 flex items-center justify-center text-white shadow">E</div>
+    </div>
+  
+    <nav class="flex flex-col gap-3">
+      <button *ngFor="let i of items"
+              class="w-12 h-12 rounded-xl bg-white/80 hover:bg-white shadow flex items-center justify-center transition transform hover:scale-105">
+        <span class="text-xl">{{ i.icon }}</span>
+      </button>
+    </nav>
+  </aside>
+  

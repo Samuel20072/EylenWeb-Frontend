@@ -1,0 +1,125 @@
+<!-- Fondo difuminado -->
+<div
+  class="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50"
+  (click)="closeModal()"
+  #overlay
+  *ngIf="isOpen"
+>
+  <!-- Contenedor del modal -->
+  <div
+    class="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4 relative overflow-hidden"
+    (click)="$event.stopPropagation()"
+    #modal
+  >
+    <!-- Botón de cierre -->
+    <button
+      (click)="closeModal()"
+      class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition text-lg"
+    >
+      ✕
+    </button>
+
+    <!-- Título -->
+    <h2 class="text-xl font-semibold text-rose-700 mb-2 text-center">
+      Enviar comprobante de pago
+    </h2>
+    <p class="text-gray-600 text-xs mb-4 text-center">
+      Sube tu comprobante para validar el pago del paquete seleccionado.
+    </p>
+
+    <!-- Formulario -->
+    <form class="flex flex-col gap-3" (submit)="onSubmit($event)">
+      <!-- Nombre -->
+      <input
+        type="text"
+        placeholder="Tu nombre completo"
+        class="border border-rose-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400 transition"
+        [(ngModel)]="formData.name"
+        name="name"
+        required
+      />
+
+      <!-- Email -->
+      <input
+        type="email"
+        placeholder="Tu correo electrónico"
+        class="border border-rose-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400 transition"
+        [(ngModel)]="formData.email"
+        name="email"
+        required
+      />
+
+      <!-- Teléfono -->
+      <input
+        type="tel"
+        placeholder="Tu número de contacto"
+        class="border border-rose-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400 transition"
+        [(ngModel)]="formData.phone"
+        name="phone"
+        required
+      />
+
+      <!-- Campo del paquete -->
+      <input
+        type="text"
+        class="border border-rose-200 rounded-lg p-2.5 text-sm bg-gray-50 text-gray-600"
+        [value]="selectedPackage?.title || 'Sin paquete seleccionado'"
+        readonly
+      />
+
+      <!-- Método de pago -->
+      <select
+        class="border border-rose-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400 transition"
+        [(ngModel)]="formData.paymentMethod"
+        name="paymentMethod"
+        required
+      >
+        <option value="" disabled selected>Selecciona método de pago</option>
+        <option value="Nequi">Nequi</option>
+        <option value="Daviplata">Daviplata</option>
+        <option value="Bancolombia">Bancolombia</option>
+      </select>
+
+      <!-- Monto pagado -->
+      <input
+        type="number"
+        placeholder="Monto pagado (COP)"
+        class="border border-rose-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400 transition"
+        [(ngModel)]="formData.amount"
+        name="amount"
+        required
+      />
+
+      <!-- Subir comprobante -->
+      <div>
+        <label class="block text-xs font-medium text-gray-700 mb-1"
+          >Sube tu comprobante</label
+        >
+        <input
+          type="file"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          class="border border-rose-200 rounded-lg p-2.5 w-full text-sm focus:outline-none focus:ring-2 focus:ring-rose-400 transition"
+          required
+        />
+      </div>
+
+      <!-- Comentario -->
+      <textarea
+        placeholder="Comentario opcional"
+        rows="2"
+        class="border border-rose-200 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-rose-400 transition"
+        [(ngModel)]="formData.message"
+        name="message"
+      ></textarea>
+
+      <!-- Botón de envío -->
+      <button
+        type="submit"
+        class="bg-green-600 text-white py-2.5 rounded-lg hover:bg-green-700 transition-all text-sm shadow-md"
+      >
+        Enviar comprobante
+      </button>
+    </form>
+  </div>
+</div>

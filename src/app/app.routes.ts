@@ -4,6 +4,8 @@ import { Class } from './pages/class/class';
 import { SobreMi } from './pages/sobre-mi/sobre-mi';
 import { Contacto } from './pages/contacto/contacto';
 import { Register } from './pages/register/register';
+import { Login } from './pages/login/login';
+import { Admin } from './pages/admin/admin';
 
 export const routes: Routes = [
   {
@@ -25,5 +27,13 @@ export const routes: Routes = [
   {
     path: 'registro',
     component: Register,
+  },
+  {
+    path: 'login',
+    component: Login,
+  },
+  {
+    path: 'admin',
+    component: Admin,
   },
 ];

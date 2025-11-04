@@ -1,0 +1,48 @@
+<div class="min-h-screen  p-6">
+    <div class="max-w-[1300px] mx-auto">
+      <!-- Header -->
+      <app-admin-header></app-admin-header>
+  
+      <!-- Layout general -->
+      <div class="mt-4 flex gap-6">
+        <!-- Sidebar -->
+        <div class="flex-shrink-0">
+          <app-admin-sidebar></app-admin-sidebar>
+        </div>
+  
+        <!-- Contenido principal -->
+        <main class="flex-1 grid grid-cols-5 gap-6">
+          <!-- Gráfico y calendario -->
+          <div class="col-span-8 rounded-2xl">
+            <div class="grid grid-cols-3 gap-6">
+              <div class="col-span-2">
+                <app-sales-donut></app-sales-donut>
+              </div>
+              <div class="col-span-1">
+                <app-upcoming-calendar></app-upcoming-calendar>
+              </div>
+            </div>
+          </div>
+  
+          <!-- Fila inferior (paquetes, stats y usuarios) -->
+          <div class="col-span-12 grid grid-cols-12 gap-6">
+            <!-- Paquetes -->
+            <div class="col-span-4">
+              <app-top-packages></app-top-packages>
+            </div>
+  
+            <!-- Estadísticas -->
+            <div class="col-span-4">
+              <app-stats-card></app-stats-card>
+            </div>
+  
+            <!-- Usuarios -->
+            <div class="col-span-6">
+              <app-users-list></app-users-list>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+  
