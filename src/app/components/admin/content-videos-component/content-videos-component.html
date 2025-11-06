@@ -1,0 +1,35 @@
+<div class="bg-white p-6 rounded-xl shadow-md flex flex-col gap-6">
+    <div class="flex items-center justify-between">
+      <h2 class="text-lg font-semibold text-[#340803]">Videos</h2>
+      <button
+        (click)="addVideo()"
+        class="bg-[#C1121F] text-white px-4 py-2 rounded-lg hover:bg-[#9b0d16] transition"
+      >
+        <i class="fa-solid fa-plus mr-2"></i> Agregar Video
+      </button>
+    </div>
+  
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div
+        *ngFor="let vid of videos"
+        class="video-card bg-[#FFB1B8]/20 rounded-xl shadow-md overflow-hidden relative group"
+      >
+        <iframe
+          [src]="vid.url"
+          class="w-full h-48 rounded-t-xl"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <div class="p-3 flex justify-between items-center">
+          <p class="text-sm font-medium text-[#340803]">{{ vid.title }}</p>
+          <button
+            (click)="deleteVideo(vid.id)"
+            class="text-red-600 hover:text-red-800 transition"
+          >
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

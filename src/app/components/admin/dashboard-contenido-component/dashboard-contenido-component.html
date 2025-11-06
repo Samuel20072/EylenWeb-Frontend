@@ -1,0 +1,41 @@
+<div class="min-h-screen p-8 flex flex-col gap-8">
+    <header class="flex items-center justify-between">
+      <h1 class="text-2xl font-bold text-[#340803]">Gestión de Contenido</h1>
+    </header>
+  
+    <!-- 🔹 Tabs de navegación -->
+    <nav class="flex gap-3">
+      <button
+        (click)="activeTab = 'imagenes'"
+        [class.bg-[#C1121F]]="activeTab === 'imagenes'"
+        [class.text-white]="activeTab === 'imagenes'"
+        class="px-5 py-2 rounded-full border border-[#C1121F] text-[#C1121F] font-medium transition hover:bg-[#C1121F] hover:text-white"
+      >
+        Imágenes
+      </button>
+      <button
+        (click)="activeTab = 'videos'"
+        [class.bg-[#C1121F]]="activeTab === 'videos'"
+        [class.text-white]="activeTab === 'videos'"
+        class="px-5 py-2 rounded-full border border-[#C1121F] text-[#C1121F] font-medium transition hover:bg-[#C1121F] hover:text-white"
+      >
+        Videos
+      </button>
+      <button
+        (click)="activeTab = 'textos'"
+        [class.bg-[#C1121F]]="activeTab === 'textos'"
+        [class.text-white]="activeTab === 'textos'"
+        class="px-5 py-2 rounded-full border border-[#C1121F] text-[#C1121F] font-medium transition hover:bg-[#C1121F] hover:text-white"
+      >
+        Textos
+      </button>
+    </nav>
+  
+    <!-- 🔹 Contenido dinámico -->
+    <section>
+      <app-content-images *ngIf="activeTab === 'imagenes'"></app-content-images>
+      <app-content-videos *ngIf="activeTab === 'videos'"></app-content-videos>
+      <app-content-texts *ngIf="activeTab === 'textos'"></app-content-texts>
+    </section>
+  </div>
+  

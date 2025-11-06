@@ -1,0 +1,12 @@
+/* Personalización del scroll */
+::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #a0eb8a;
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #6dd850;
+  }
+  

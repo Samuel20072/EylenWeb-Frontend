@@ -1,12 +1,13 @@
 import { Component, AfterViewInit } from '@angular/core';
-import { gsap } from 'gsap';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { gsap } from 'gsap';
 import { CustomInputComponent } from '../../components/contacto/custom-input.component/custom-input.component';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, CustomInputComponent],
+  imports: [CommonModule, RouterModule, CustomInputComponent], // 🔹 Agregado RouterModule
   templateUrl: './register.html',
 })
 export class Register implements AfterViewInit {

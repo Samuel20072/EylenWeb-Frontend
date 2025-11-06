@@ -1,13 +1,13 @@
-<div #block class="bg-white rounded-xl p-4 shadow-md w-full">
-    <h3 class="text-xl font-medium text-[#310D09] mb-3">Paquetes más vendidos</h3>
-    <ul class="space-y-2">
-      <li *ngFor="let p of packs" class="flex items-center justify-between p-3 bg-[#FFB1B8] rounded-lg">
-        <div>
-          <div class="font-semibold text-sm">{{ p.title }}</div>
-          <div class="text-xs text-[#310D09]">{{ p.users }} Usuarios</div>
-        </div>
-        <div class="text-sm font-medium">Total: {{ p.total | number }} cop</div>
-      </li>
-    </ul>
-  </div>
-  
+<div #block class="bg-white rounded-xl p-6 shadow-md w-full h-full min-h-[400px] flex flex-col">
+  <h3 class="text-xl font-medium text-[#310D09] mb-3">Paquetes más vendidos</h3>
+
+  <ul class="space-y-2 flex-1">
+    <li *ngFor="let p of packs" class="flex items-center justify-between p-3 bg-[#FFB1B8] rounded-lg">
+      <div>
+        <div class="font-semibold text-sm">{{ p.title }}</div>
+        <div class="text-xs text-[#310D09]">{{ p.users }} Usuarios</div>
+      </div>
+      <div class="text-sm font-medium">Total: {{ p.total | number }} cop</div>
+    </li>
+  </ul>
+</div>

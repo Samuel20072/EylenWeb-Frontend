@@ -1,0 +1,35 @@
+<div class="relative">
+    <!-- Icono -->
+    <button
+      (click)="toggleNotifications()"
+      class="px-3 py-1 text-sm rounded-lg bg-white shadow-sm flex items-center gap-2 relative"
+    >
+      <i class="fa-solid fa-bell text-[#C1121F]"></i>
+      <span *ngIf="notifications.length > 0" class="absolute -top-1 -right-1 bg-[#C1121F] text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
+        {{ notifications.length }}
+      </span>
+      <span>Notificaciones</span>
+    </button>
+  
+    <!-- Panel desplegable -->
+    <div
+      *ngIf="showPanel"
+      class="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-lg border border-gray-100 p-3 z-50"
+    >
+      <div *ngIf="notifications.length === 0" class="text-sm text-gray-500 text-center py-2">
+        No hay notificaciones nuevas
+      </div>
+  
+      <div
+        *ngFor="let n of notifications"
+        class="p-2 rounded-lg mb-2 bg-[#FFEBEB] text-[#340803] text-sm flex items-start gap-2"
+      >
+        <i class="fa-solid fa-circle-check text-[#C1121F] mt-1"></i>
+        <div>
+          <p><strong>{{ n.user }}</strong> ha realizado un pago.</p>
+          <p class="text-xs text-gray-500">{{ n.time }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  

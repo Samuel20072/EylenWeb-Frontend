@@ -1,37 +1,64 @@
-<div #card class="bg-white rounded-xl p-4 shadow-md w-full">
-  <div class="flex items-center justify-between mb-3">
-    <h3 class="text-sm font-medium text-[#340803]">Próximas clases</h3>
-    <div class="flex items-center gap-2">
-      <button class="w-8 h-8 flex items-center justify-center rounded-full text-sm transition duration-200 bg-[#C1121F] text-white">
+<div
+  #card
+  class="bg-white rounded-2xl p-8 shadow-lg w-full min-h-[420px] flex flex-col transition-all duration-300"
+>
+  <!-- 🔹 Encabezado -->
+  <div class="flex flex-col sm:flex-row items-center justify-between mb-6">
+    <h3 class="text-xl font-semibold text-[#340803] text-center sm:text-left">
+      Próximas clases
+    </h3>
+
+    <div class="flex items-center gap-3">
+      <button
+        (click)="prevMonth()"
+        class="w-9 h-9 flex items-center justify-center rounded-full text-sm transition duration-200 bg-[#C1121F] text-white hover:bg-[#9b0f18]"
+      >
         <i class="fa-solid fa-chevron-left"></i>
       </button>
-      <span class="text-sm text-[#310D09]">{{ month }}</span>
-      <button class="w-8 h-8 flex items-center justify-center rounded-full text-sm transition duration-200 bg-[#C1121F] text-white">
+      <span class="text-base text-[#310D09] font-semibold min-w-[150px] text-center">
+        {{ month }}
+      </span>
+      <button
+        (click)="nextMonth()"
+        class="w-9 h-9 flex items-center justify-center rounded-full text-sm transition duration-200 bg-[#C1121F] text-white hover:bg-[#9b0f18]"
+      >
         <i class="fa-solid fa-chevron-right"></i>
       </button>
     </div>
   </div>
 
-  <div class="grid grid-cols-7 gap-2 text-center">
-    <div class="text-xs text-[#310D09]">Dom</div>
-    <div class="text-xs text-[#310D09]">Lun</div>
-    <div class="text-xs text-[#310D09]">Mar</div>
-    <div class="text-xs text-[#310D09]">Mie</div>
-    <div class="text-xs text-[#310D09]">Jue</div>
-    <div class="text-xs text-[#310D09]">Vie</div>
-    <div class="text-xs text-[#310D09]">Sab</div>
+  <!-- 🔹 Calendario -->
+  <div class="flex flex-col flex-1 justify-center items-center">
+    <!-- Días de la semana -->
+    <div
+      class="grid grid-cols-7 gap-4 w-full max-w-3xl text-center mb-3 text-sm text-[#310D09] font-semibold"
+    >
+      <span>Dom</span>
+      <span>Lun</span>
+      <span>Mar</span>
+      <span>Mié</span>
+      <span>Jue</span>
+      <span>Vie</span>
+      <span>Sab</span>
+    </div>
 
-    <ng-container *ngFor="let d of days">
-      <button
-        class="w-8 h-8 flex items-center justify-center rounded-full text-sm transition duration-200"
-        [ngClass]="
-          d === selected
-            ? 'bg-[#C1121F] text-[#F9F4F1]'
-            : 'bg-[#FFB1B8] text-[#C1121F]'
-        "
-      >
-        {{ d }}
-      </button>
-    </ng-container>
+    <!-- Días del mes -->
+    <div
+      class="grid grid-cols-7 gap-4 w-full max-w-3xl justify-items-center"
+    >
+      <ng-container *ngFor="let d of days">
+        <button
+          (click)="selectDay(d)"
+          class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full text-sm sm:text-base font-medium transition-all duration-200"
+          [ngClass]="
+            d === selected
+              ? 'bg-[#C1121F] text-white shadow-md scale-110'
+              : 'bg-[#FFCCD1] text-[#C1121F] hover:bg-[#C1121F]/80 hover:text-white'
+          "
+        >
+          {{ d }}
+        </button>
+      </ng-container>
+    </div>
   </div>
 </div>

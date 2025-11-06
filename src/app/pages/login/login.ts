@@ -1,12 +1,13 @@
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { gsap } from 'gsap';
 import { CustomInputComponent } from '../../components/contacto/custom-input.component/custom-input.component'; // 
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, CustomInputComponent],
+  imports: [CommonModule, CustomInputComponent,RouterModule],
   templateUrl: './login.html',
 })
 export class Login implements AfterViewInit {

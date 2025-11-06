@@ -1,12 +1,15 @@
 <aside class="flex flex-col gap-4 items-center p-3 pl-4">
-  <nav class="flex flex-col gap-3">
-    <button
+  <nav class="flex flex-col gap-3 w-full items-center">
+    <a
       *ngFor="let i of items"
-      class="w-12 h-12 rounded-xl bg-white/80 hover:bg-white shadow flex items-center justify-center transition transform hover:scale-105"
+      [routerLink]="i.route"
+      [ngClass]="{
+        'bg-[#C1121F] text-white scale-105 shadow-md': isActive(i.route),
+        'bg-white/80 text-gray-700 hover:bg-[#ffccd1]': !isActive(i.route)
+      }"
+      class="w-12 h-12 rounded-xl shadow flex items-center justify-center transition transform duration-200"
     >
-      <span class="text-xl">
-        <i class="{{ i.icon }} text-[#C1121F]"></i>
-      </span>
-    </button>
+      <i class="{{ i.icon }}"></i>
+    </a>
   </nav>
 </aside>

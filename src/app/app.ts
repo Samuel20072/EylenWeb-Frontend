@@ -10,7 +10,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [RouterOutlet, Navbar, Footer, CommonModule],
   templateUrl: './app.html',
-  styleUrl: './app.css',
+  styleUrls: ['./app.css'],
 })
 export class App {
   protected readonly title = signal('Eylen');
@@ -20,8 +20,14 @@ export class App {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        // ✅ Si la URL contiene "/admin", ocultamos navbar y footer
-        this.showLayout.set(!event.url.includes('/admin'));
+        const currentUrl = event.url;
+        // Ocultar layout si está en /admin, /registro o /login
+        const hideLayout =
+          currentUrl.includes('/admin') ||
+          currentUrl.includes('/registro') ||
+          currentUrl.includes('/login');
+
+        this.showLayout.set(!hideLayout);
       });
   }
 }
