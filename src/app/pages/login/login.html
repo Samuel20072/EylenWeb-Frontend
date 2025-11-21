@@ -1,6 +1,6 @@
 <div class="min-h-screen flex items-center justify-center p-6">
   <div
-    class="grid grid-cols-1 md:grid-cols-2  rounded-3xl max-w-5xl w-full backdrop-blur-md overflow-hidden transition-all duration-500 hover:shadow-[#c1121f]/40"
+    class="grid grid-cols-1 md:grid-cols-2 rounded-3xl max-w-5xl w-full backdrop-blur-md overflow-hidden transition-all duration-500 hover:shadow-[#c1121f]/40"
   >
     <!-- Formulario -->
     <div class="flex flex-col justify-center items-center p-10 text-left relative">
@@ -17,25 +17,72 @@
         Iniciar Sesión
       </h2>
 
-      <form class="flex flex-col gap-5 w-full max-w-sm">
-        <app-custom-input-component
-          label="Correo electrónico"
-          placeholder="Ingresa tu correo electrónico..."
-          type="email"
-        ></app-custom-input-component>
+      <!-- FORMULARIO CON VALIDACIONES -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 w-full max-w-sm">
 
-        <app-custom-input-component
-          label="Contraseña"
-          placeholder="Ingresa tu contraseña..."
-          type="password"
-        ></app-custom-input-component>
+        <!-- Email -->
+        <div>
+          <app-custom-input-component
+            label="Correo electrónico"
+            placeholder="Ingresa tu correo electrónico..."
+            type="email"
+            formControlName="email"
+          ></app-custom-input-component>
 
+          <p
+            *ngIf="email?.invalid && (email?.touched || email?.dirty)"
+            class="text-red-500 text-sm mt-1"
+          >
+            Debe ser un correo electrónico válido.
+          </p>
+        </div>
+
+        <!-- Contraseña -->
+        <div>
+          <app-custom-input-component
+            label="Contraseña"
+            placeholder="Ingresa tu contraseña..."
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+          ></app-custom-input-component>
+
+          <button
+            type="button"
+            class="text-sm text-[#310D09] hover:text-[#C1121F] mt-1"
+            (click)="togglePassword()"
+          >
+            {{ showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña' }}
+          </button>
+
+          <div
+            class="text-red-500 text-sm mt-1"
+            [hidden]="!(password?.touched || password?.dirty) || !password?.errors?.['required']">
+            Debes llenar la contraseña
+          </div>
+
+          <div
+            class="text-red-500 text-sm mt-1"
+            [hidden]="!password?.dirty || !password?.errors?.['weakPassword']">
+            La contraseña es muy débil.
+          </div>
+        </div>
+
+        <!-- BOTÓN -->
         <button
           type="submit"
           class="bg-[#C1121F] text-white py-2 rounded-full font-semibold mt-4 hover:scale-105 hover:bg-[#a50e19] transition-transform duration-300 shadow-md"
         >
           Iniciar sesión
         </button>
+
+        <!-- Error general -->
+        <div
+          *ngIf="errorMessage"
+          class="text-red-700 text-sm font-bold mt-2"
+        >
+          {{ errorMessage }}
+        </div>
+
       </form>
 
       <!-- Enlaces inferiores -->
