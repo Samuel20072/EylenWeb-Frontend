@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../environments/environment.dev';
 
 interface JwtPayload {
-  exp: number; // campo de expiración del JWT
+  exp: number;
 }
 
 @Injectable({
@@ -22,12 +22,9 @@ export class AuthService {
     if (storedUser) {
       this.user.set(JSON.parse(storedUser));
     }
-
-    // ✅ Chequear expiración del token al iniciar la app
     this.checkToken();
   }
 
-  // ✅ Método para verificar expiración del token
   private checkToken() {
     const token = localStorage.getItem('token');
     if (token) {
@@ -36,7 +33,6 @@ export class AuthService {
         const currentTime = Math.floor(Date.now() / 1000);
 
         if (decoded.exp < currentTime) {
-          // Token expirado → limpiar sesión
           this.logout().subscribe();
         } else {
           this.authChanged$.next(true);
@@ -50,17 +46,15 @@ export class AuthService {
     }
   }
 
-  // ✅ Login
+  // 🚀 Registro — acepta cualquier objeto
+  register(data: any): Observable<any> {
+    return this.http.post(`${this.API_URL}/auth/register`, data);
+  }
+
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.API_URL}/auth/login`, { email, password });
   }
 
-  // ✅ Registro (corregido → acepta un objeto)
-  register(data: { name: string; email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.API_URL}/users/register`, data);
-  }
-
-  // ✅ Logout
   logout(): Observable<any> {
     this.user.set(null);
     localStorage.removeItem('token');
@@ -69,13 +63,11 @@ export class AuthService {
     return of({ success: true });
   }
 
-  // ✅ Validar autenticación
   isAuthenticated(): boolean {
-    this.checkToken(); // siempre valida el token
+    this.checkToken();
     return !!localStorage.getItem('token');
   }
 
-  // ✅ Guardar usuario + token
   setUser(user: any, token: string) {
     this.user.set(user);
     localStorage.setItem('user', JSON.stringify(user));
@@ -83,12 +75,10 @@ export class AuthService {
     this.authChanged$.next(true);
   }
 
-  // ✅ Olvidé mi contraseña
   forgotPassword(email: string): Observable<any> {
     return this.http.post(`${this.API_URL}/auth/forgot-password`, { email });
   }
 
-  // ✅ Restablecer contraseña
   resetPassword(token: string, newPassword: string): Observable<any> {
     return this.http.post(`${this.API_URL}/auth/reset-password`, {
       token,

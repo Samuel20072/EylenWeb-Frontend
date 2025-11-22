@@ -1,100 +1,61 @@
-<div class="min-h-screen flex items-center justify-center p-6">
-  <div
-    class="grid grid-cols-1 md:grid-cols-2 rounded-3xl max-w-5xl w-full backdrop-blur-md overflow-hidden transition-all duration-500 hover:shadow-[#c1121f]/40"
-  >
-    <!-- Formulario -->
-    <div
-      id="form-section"
-      class="flex flex-col justify-center items-center p-10 text-left relative"
-    >
-      <a
-        routerLink="/"
-        class="text-sm mb-6 text-[#310D09] hover:text-[#C1121F] self-start transition-colors duration-300 font-semibold"
-      >
-        ← Volver al inicio
-      </a>
+<form
+  [formGroup]="registerForm"
+  (ngSubmit)="onSubmit()"
+  class="flex flex-col gap-4 w-full max-w-sm"
+>
+  <app-custom-input-component
+    label="Nombre completo"
+    placeholder="Ingresa tu nombre completo..."
+    [control]="registerForm.get('name')!"
+  ></app-custom-input-component>
 
-      <h2
-        class="text-3xl md:text-4xl font-playfair font-extrabold text-[#310D09] mb-8 text-center"
-      >
-        Crear cuenta
-      </h2>
+  <app-custom-input-component
+    label="Correo electrónico"
+    placeholder="Ingresa tu correo electrónico..."
+    type="email"
+    [control]="registerForm.get('email')!"
+  ></app-custom-input-component>
 
-      <form class="flex flex-col gap-4 w-full max-w-sm">
-        <app-custom-input-component
-          label="Nombre completo"
-          placeholder="Ingresa tu nombre completo..."
-        ></app-custom-input-component>
+  <app-custom-input-component
+    label="Contraseña"
+    placeholder="Crea una contraseña..."
+    type="password"
+    [control]="registerForm.get('password')!"
+  ></app-custom-input-component>
 
-        <app-custom-input-component
-          label="Correo electrónico"
-          placeholder="Ingresa tu correo electrónico..."
-          type="email"
-        ></app-custom-input-component>
+  <app-custom-input-component
+    label="Confirmar contraseña"
+    placeholder="Confirma tu contraseña..."
+    type="password"
+    [control]="registerForm.get('confirmPassword')!"
+  ></app-custom-input-component>
 
-        <app-custom-input-component
-          label="Contraseña"
-          placeholder="Crea una contraseña..."
-          type="password"
-        ></app-custom-input-component>
+  <app-custom-input-component
+    label="Teléfono"
+    placeholder="Ingresa tu número de teléfono..."
+    type="tel"
+    [control]="registerForm.get('phone')!"
+  ></app-custom-input-component>
 
-        <app-custom-input-component
-          label="Confirmar contraseña"
-          placeholder="Confirma tu contraseña..."
-          type="password"
-        ></app-custom-input-component>
+  <app-custom-input-component
+    label="Ubicación"
+    placeholder="Ingresa tu ciudad..."
+    [control]="registerForm.get('location')!"
+  ></app-custom-input-component>
 
-        <app-custom-input-component
-          label="Teléfono"
-          placeholder="Ingresa tu número de teléfono..."
-          type="tel"
-        ></app-custom-input-component>
-
-        <app-custom-input-component
-          label="Ubicación"
-          placeholder="Ingresa tu ciudad..."
-        ></app-custom-input-component>
-
-        <div>
-          <label class="block font-semibold text-gray-800 mb-1">
-            Fecha de nacimiento
-          </label>
-          <input
-            type="date"
-            class="w-full px-3 py-2 border-2 border-red-400 rounded-full text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
-          />
-        </div>
-
-        <button
-          type="submit"
-          class="bg-[#C1121F] text-white py-2 rounded-full font-semibold hover:scale-105 hover:bg-[#a50e19] transition-transform duration-300 shadow-md mt-4"
-        >
-          Registrarme
-        </button>
-      </form>
-
-      <!-- Enlaces inferiores -->
-      <div class="mt-6 text-center text-sm space-y-2">
-        <span class="text-[#310D09]">¿Ya tienes una cuenta?</span>
-        <a
-          routerLink="/login"
-          class="text-[#C1121F] font-semibold hover:underline hover:scale-105 inline-block transition-transform duration-300"
-        >
-          Inicia sesión aquí
-        </a>
-      </div>
-    </div>
-
-    <!-- Imagen -->
-    <div
-      id="image-section"
-      class="hidden md:flex justify-center items-center "
-    >
-      <img
-        src="../../../assets/images/eylenLogin.png"
-        alt="Imagen de registro"
-        class="rounded-3xl shadow-lg object-cover max-h-[600px] w-full transition-transform duration-500 hover:scale-105"
-      />
-    </div>
+  <div class="form-element">
+    <label class="block font-semibold mb-1">Fecha de nacimiento</label>
+    <input
+      type="date"
+      formControlName="birthdate"
+      class="w-full px-3 py-2 border-2 border-red-400 rounded-full text-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+    />
   </div>
-</div>
+
+  <button
+    type="submit"
+    class="bg-[#C1121F] text-white py-2 rounded-full font-semibold hover:scale-105 hover:bg-[#a50e19] transition-transform duration-300 shadow-md mt-4"
+  >
+    Registrarme
+  </button>
+</form>

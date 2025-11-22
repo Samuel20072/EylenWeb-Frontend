@@ -2,114 +2,52 @@
   <div
     class="grid grid-cols-1 md:grid-cols-2 rounded-3xl max-w-5xl w-full backdrop-blur-md overflow-hidden transition-all duration-500 hover:shadow-[#c1121f]/40"
   >
-    <!-- Formulario -->
-    <div class="flex flex-col justify-center items-center p-10 text-left relative">
-      <a
-        routerLink="/"
-        class="text-sm mb-6 text-[#310D09] hover:text-[#C1121F] self-start transition-colors duration-300 font-semibold"
-      >
-        ← Volver al inicio
-      </a>
 
-      <h2
-        class="text-3xl md:text-4xl font-playfair font-extrabold text-[#310D09] mb-8 text-center"
-      >
-        Iniciar Sesión
+    <!-- FORMULARIO -->
+    <div
+      #formSection
+      class="flex flex-col justify-center items-center p-10 text-left relative"
+    >
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">
+        Iniciar sesión
       </h2>
 
-      <!-- FORMULARIO CON VALIDACIONES -->
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-5 w-full max-w-sm">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="w-full flex flex-col gap-4">
 
-        <!-- Email -->
-        <div>
-          <app-custom-input-component
-            label="Correo electrónico"
-            placeholder="Ingresa tu correo electrónico..."
-            type="email"
-            formControlName="email"
-          ></app-custom-input-component>
+        <app-custom-input-component
+          label="Correo electrónico"
+          placeholder="Ingresa tu correo"
+          type="email"
+          [control]="loginForm.get('email')!"
+        ></app-custom-input-component>
 
-          <p
-            *ngIf="email?.invalid && (email?.touched || email?.dirty)"
-            class="text-red-500 text-sm mt-1"
-          >
-            Debe ser un correo electrónico válido.
-          </p>
-        </div>
+        <app-custom-input-component
+          label="Contraseña"
+          placeholder="Ingresa tu contraseña"
+          type="password"
+          [control]="loginForm.get('password')!"
+        ></app-custom-input-component>
 
-        <!-- Contraseña -->
-        <div>
-          <app-custom-input-component
-            label="Contraseña"
-            placeholder="Ingresa tu contraseña..."
-            [type]="showPassword ? 'text' : 'password'"
-            formControlName="password"
-          ></app-custom-input-component>
-
-          <button
-            type="button"
-            class="text-sm text-[#310D09] hover:text-[#C1121F] mt-1"
-            (click)="togglePassword()"
-          >
-            {{ showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña' }}
-          </button>
-
-          <div
-            class="text-red-500 text-sm mt-1"
-            [hidden]="!(password?.touched || password?.dirty) || !password?.errors?.['required']">
-            Debes llenar la contraseña
-          </div>
-
-          <div
-            class="text-red-500 text-sm mt-1"
-            [hidden]="!password?.dirty || !password?.errors?.['weakPassword']">
-            La contraseña es muy débil.
-          </div>
-        </div>
-
-        <!-- BOTÓN -->
         <button
           type="submit"
-          class="bg-[#C1121F] text-white py-2 rounded-full font-semibold mt-4 hover:scale-105 hover:bg-[#a50e19] transition-transform duration-300 shadow-md"
+          class="w-full bg-[#c1121f] text-white py-3 rounded-xl font-medium hover:bg-[#9f0f19] transition-all"
         >
-          Iniciar sesión
+          Entrar
         </button>
-
-        <!-- Error general -->
-        <div
-          *ngIf="errorMessage"
-          class="text-red-700 text-sm font-bold mt-2"
-        >
-          {{ errorMessage }}
-        </div>
-
       </form>
-
-      <!-- Enlaces inferiores -->
-      <div class="mt-6 text-center text-sm space-y-2">
-        <a
-          routerLink="/forgot-password"
-          class="text-[#310D09] hover:text-[#C1121F] transition-colors duration-300 block"
-        >
-          ¿Olvidaste tu contraseña?
-        </a>
-        <span class="text-[#310D09]">¿No tienes una cuenta?</span>
-        <a
-          routerLink="/registro"
-          class="text-[#C1121F] font-semibold hover:underline hover:scale-105 inline-block transition-transform duration-300"
-        >
-          Crea una aquí
-        </a>
-      </div>
     </div>
 
-    <!-- Imagen -->
-    <div class="hidden md:flex justify-center items-center bg-[#C1121F]/10">
+    <!-- IMAGEN -->
+    <div
+      #imageSection
+      class="hidden md:flex justify-center items-center bg-[#C1121F]/10"
+    >
       <img
         src="../../../assets/images/eylenLogin.png"
-        alt="Imagen de login"
+        alt="Imagen login"
         class="rounded-3xl shadow-lg object-cover max-h-[600px] w-full transition-transform duration-500 hover:scale-105"
       />
     </div>
+
   </div>
 </div>
