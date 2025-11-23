@@ -11,7 +11,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router'; // 👈 AÑADIDO
 import gsap from 'gsap';
 
 import { CustomInputComponent } from '../../components/contacto/custom-input.component/custom-input.component';
@@ -36,7 +36,8 @@ export class Login implements AfterViewInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router // 👈 AÑADIDO
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -73,6 +74,16 @@ export class Login implements AfterViewInit {
     this.authService.login(email, password).subscribe({
       next: (res) => {
         console.log('Login exitoso:', res);
+
+        // 🔥 GUARDAR USUARIO Y TOKEN
+        this.authService.setUser(res.user, res.token);
+
+        // 🔥 REDIRECCIÓN SEGÚN ROL
+        if (res.user.role === 'admin') {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/']);
+        }
       },
       error: (err) => {
         console.error('Error en login:', err);
