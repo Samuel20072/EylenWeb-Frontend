@@ -1,13 +1,15 @@
-<nav class="flex justify-around items-center py-5 px-30 bg-[#f9dada]">
-    <h1 class="text-2xl font-regular text-[#340803] font-playfair">Eylen</h1>
+<nav class="flex justify-between items-center py-4 px-8 bg-[#f9dada] shadow-lg">
+  <h1 class="text-3xl font-normal text-[#340803] font-serif tracking-wider">Eylen</h1>
   
-    <ul class="flex gap-8 text-[#340803] font-bold">
-      <app-navbar-item name="INICIO" link="/"></app-navbar-item>
-      <app-navbar-item name="CLASES" link="/clases"></app-navbar-item>
-      <app-navbar-item name="SOBRE MÍ" link="/sobre-mi"></app-navbar-item>
-      <app-navbar-item name="CONTACTO" link="/contacto"></app-navbar-item>
-    </ul>
+  <ul class="flex gap-8 text-[#340803] font-semibold text-lg">
+    <app-navbar-item name="INICIO" link="/"></app-navbar-item>
+    <app-navbar-item name="CLASES" link="/clases"></app-navbar-item>
+    <app-navbar-item name="SOBRE MÍ" link="/sobre-mi"></app-navbar-item>
+    <app-navbar-item name="CONTACTO" link="/contacto"></app-navbar-item>
+  </ul>
   
+  <!-- Mostrar botón de inicio de sesión si NO está logeado -->
+  @if (!isLoggedIn) {
     <app-button 
       text="Iniciar sesión" 
       color="#C1121F" 
@@ -16,5 +18,22 @@
       link="/login"
       (onClick)="onLoginClick()">
     </app-button>
-  </nav>
-  
+  }
+
+  <!-- Mostrar nombre y avatar si SÍ está logeado -->
+  @if (isLoggedIn) {
+    <div class="flex items-center gap-3">
+      <!-- Nombre del usuario (oculto en pantallas pequeñas) -->
+      <span class="text-[#340803] font-medium text-lg hidden sm:inline-block">
+        Hola, {{ userName }}
+      </span>
+
+      <!-- Avatar con click para navegación por rol -->
+      <div 
+        class="w-10 h-10 rounded-full overflow-hidden cursor-pointer transition transform hover:scale-105 shadow-md border-2 border-[#C1121F] hover:border-red-700"
+        (click)="onAvatarClick()">
+        <img [src]="userAvatarUrl" alt="Avatar del usuario" class="w-full h-full object-cover">
+      </div>
+    </div>
+  }
+</nav>

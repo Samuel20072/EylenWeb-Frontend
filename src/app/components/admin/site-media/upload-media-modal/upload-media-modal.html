@@ -1,0 +1,116 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white p-8 rounded-lg shadow-2xl w-full max-w-lg transform transition-all duration-300 scale-100">
+      
+      <h2 class="text-3xl font-bold mb-6 text-[#C1121F] border-b pb-2">Subir Media</h2>
+  
+      <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()">
+        
+        <!-- Selector de Modo de Subida (Local vs URL) -->
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Método de Subida</label>
+          <div class="flex rounded-lg bg-gray-100 p-1">
+            <button
+              type="button"
+              (click)="setUploadMode('local')"
+              class="flex-1 py-2 text-center text-sm font-semibold rounded-lg transition-colors duration-200"
+              [class.bg-[#C1121F]]="uploadMode === 'local'"
+              [class.text-white]="uploadMode === 'local'"
+              [class.text-gray-600]="uploadMode === 'url'"
+            >
+              Subir Archivo Local
+            </button>
+            <button
+              type="button"
+              (click)="setUploadMode('url')"
+              class="flex-1 py-2 text-center text-sm font-semibold rounded-lg transition-colors duration-200"
+              [class.bg-[#C1121F]]="uploadMode === 'url'"
+              [class.text-white]="uploadMode === 'url'"
+              [class.text-gray-600]="uploadMode === 'local'"
+            >
+              Importar por URL (YouTube, Vimeo, etc.)
+            </button>
+          </div>
+        </div>
+  
+        <!-- Campo de Entrada de Archivo Local -->
+        <div *ngIf="uploadMode === 'local'" class="mb-4 p-4 border border-dashed border-gray-300 rounded-lg">
+          <label class="block text-gray-700 font-medium mb-2">Seleccionar Archivo ({{ mediaType === 'image' ? 'Imagen' : 'Video' }})</label>
+          <input 
+            type="file" 
+            (change)="onFileSelected($event)" 
+            class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#F9DADA] file:text-[#C1121F] hover:file:bg-[#FAE3E3]"
+            required
+          >
+          <p *ngIf="fileError" class="text-red-500 text-sm mt-1">
+            {{ fileError }}
+          </p>
+        </div>
+  
+        <!-- Campo de Entrada de URL Remota -->
+        <div *ngIf="uploadMode === 'url'" class="mb-4">
+          <label for="remoteUrl" class="block text-gray-700 font-medium mb-2">URL del Video (YouTube, Vimeo, etc.)</label>
+          <input 
+            id="remoteUrl" 
+            type="url" 
+            formControlName="remoteUrl" 
+            placeholder="Ej: https://www.youtube.com/watch?v=..."
+            class="w-full border p-2 rounded-lg focus:ring-[#C1121F] focus:border-[#C1121F] transition duration-200"
+          >
+          <div *ngIf="uploadForm.get('remoteUrl')?.invalid && uploadForm.get('remoteUrl')?.touched" class="text-red-500 text-sm mt-1">
+            La URL es requerida y debe ser válida.
+          </div>
+        </div>
+        
+        <!-- Título y Sección (Se mantienen iguales) -->
+        <div class="mb-4">
+          <label for="title" class="block text-gray-700 font-medium mb-2">Título / Descripción</label>
+          <input 
+            id="title" 
+            type="text" 
+            formControlName="title" 
+            class="w-full border p-2 rounded-lg focus:ring-[#C1121F] focus:border-[#C1121F] transition duration-200"
+          >
+          <div *ngIf="uploadForm.get('title')?.invalid && uploadForm.get('title')?.touched" class="text-red-500 text-sm mt-1">
+            El título es requerido.
+          </div>
+        </div>
+  
+        <div class="mb-6">
+          <label for="section" class="block text-gray-700 font-medium mb-2">Sección del Sitio</label>
+          <input 
+            id="section" 
+            type="text" 
+            formControlName="section" 
+            class="w-full border p-2 rounded-lg focus:ring-[#C1121F] focus:border-[#C1121F] transition duration-200"
+            placeholder="Ej: home_slider, testimonios"
+          >
+          <div *ngIf="uploadForm.get('section')?.invalid && uploadForm.get('section')?.touched" class="text-red-500 text-sm mt-1">
+            La sección es requerida.
+          </div>
+        </div>
+        
+        <!-- Botones de Acción -->
+        <div class="flex justify-end gap-3">
+          <button
+            type="button"
+            (click)="close(false)"
+            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+            [disabled]="uploading"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            [disabled]="!isFormValid() || uploading"
+            class="px-4 py-2 rounded-lg text-white font-medium transition-colors"
+            [class.bg-[#C1121F]]="isFormValid() && !uploading"
+            [class.bg-gray-400]="!isFormValid() || uploading"
+          >
+            {{ uploading ? 'Procesando...' : (uploadMode === 'url' ? 'Importar y Guardar' : 'Subir y Guardar') }}
+          </button>
+        </div>
+        
+        <div *ngIf="uploadError" class="mt-4 text-red-500 text-sm text-center font-medium">{{ uploadError }}</div>
+      </form>
+    </div>
+  </div>
