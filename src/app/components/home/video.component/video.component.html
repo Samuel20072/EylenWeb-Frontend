@@ -1,52 +1,81 @@
 <section class="bg-[#FFB1B8] flex flex-col items-center py-12">
-  <h2 class="text-xl md:text-2xl font-playfair text-[#1A1A1A] mb-10">
-    ¿Qué es el baile consciente?
-  </h2>
-
-  <div class="relative w-[90%] md:w-[1000px] h-[500px] bg-gray-200 rounded-2xl shadow-lg overflow-hidden">
-    <!-- Video -->
-    <video 
-      #videoPlayer
-      class="w-full h-full object-cover"
-      [muted]="isMuted"
-      (click)="togglePlay()"
-      (ended)="onVideoEnded()">
-      <source src="assets/videos/IMG_1502.MOV" type="video/mp4">
-      Tu navegador no soporta el elemento video.
-    </video>
-
-    <!-- Overlay -->
-    <div #overlay class="absolute inset-0 flex justify-center items-center bg-black/20 transition-opacity duration-500"
-         *ngIf="!isPlaying">
-      <div 
-        class="w-16 h-16 bg-white rounded-full flex justify-center items-center shadow-md cursor-pointer hover:bg-gray-50 transition"
-        (click)="togglePlay()">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z" />
-        </svg>
-      </div>
-    </div>
-
-    <!-- Controles -->
-    <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center">
-      <button
-        (click)="toggleMute()"
-        class="volume-btn bg-[#C1121F] text-white p-2 rounded-lg shadow-md hover:bg-[#a32f2f] transition">
-        <svg *ngIf="!isMuted" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2c0-1.77-.77-3.29-2-4.3v8.6c1.23-1.01 2-2.53 2-4.3z" />
-        </svg>
-        <svg *ngIf="isMuted" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M16.5 12c0-1.77-.77-3.29-2-4.3v2.3l2 2V12zm2-2.5l2 2V7h-6l2 2.5zM2 4.27L4.28 2 21 18.72 18.73 21l-3-3H7v-4.27l-4-4z"/>
-        </svg>
-      </button>
-
-      <button
-        (click)="toggleFullscreen()"
-        class="fullscreen-btn bg-[#C1121F] text-white p-2 rounded-lg shadow-md hover:bg-[#a32f2f] transition">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M7 14H5v5h5v-2H7v-3zm12 5h-3v2h5v-5h-2v3zM7 7h3V5H5v5h2V7zm10 0h3v3h2V5h-5v2z" />
-        </svg>
-      </button>
-    </div>
-  </div>
-</section>
+    <h2 class="text-xl md:text-2xl font-playfair text-[#1A1A1A] mb-10">
+      ¿Qué es el baile consciente?
+    </h2>
+  
+    <!-- El contenedor solo se muestra si tenemos la URL -->
+    <div
+      *ngIf="videoUrl; else loading"
+      class="relative w-[90%] md:w-[1000px] h-[500px] bg-gray-200 rounded-2xl shadow-lg overflow-hidden">
+     
+      <!-- ⭐ LÓGICA: IFRAME para YouTube -->
+      <iframe *ngIf="isYouTubeUrl && sanitizedVideoUrl"
+              [src]="sanitizedVideoUrl"
+              title="Video de YouTube sobre baile consciente"
+             
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+              class="w-full h-full object-cover border-0">
+      </iframe>
+  
+      <!-- ⭐ LÓGICA EXISTENTE: VIDEO para Cloudinary/Video Nativo -->
+      <video
+        *ngIf="!isYouTubeUrl"
+        #videoPlayer
+        class="w-full h-full object-cover"
+        [muted]="isMuted"
+        autoplay
+        loop
+        playsinline
+        (click)="togglePlay()"
+        (ended)="onVideoEnded()">
+        <source [src]="videoUrl" type="video/mp4">
+        Tu navegador no soporta el elemento video.
+      </video>
+  
+      <!-- Overlay y Controles (Solo si NO es YouTube) -->
+      <ng-container *ngIf="!isYouTubeUrl">
+        <!-- Overlay -->
+        <div #overlay class="absolute inset-0 flex justify-center items-center bg-black/20 transition-opacity duration-500"
+              *ngIf="!isPlaying">
+          <div
+            class="w-16 h-16 bg-white rounded-full flex justify-center items-center shadow-md cursor-pointer hover:bg-gray-50 transition"
+            (click)="togglePlay()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+          </div>
+        </div>
+  
+        <!-- Controles -->
+        <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+          <button
+            (click)="toggleMute()"
+            class="volume-btn bg-[#C1121F] text-white p-2 rounded-lg shadow-md hover:bg-[#a32f2f] transition">
+            <svg *ngIf="!isMuted" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2c0-1.77-.77-3.29-2-4.3v8.6c1.23-1.01 2-2.53 2-4.3z" />
+            </svg>
+            <svg *ngIf="isMuted" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M16.5 12c0-1.77-.77-3.29-2-4.3v2.3l2 2V12zm2-2.5l2 2V7h-6l2 2.5zM2 4.27L4.28 2 21 18.72 18.73 21l-3-3H7v-4.27l-4-4z"/>
+            </svg>
+          </button>
+  
+          <button
+            (click)="toggleFullscreen()"
+            class="fullscreen-btn bg-[#C1121F] text-white p-2 rounded-lg shadow-md hover:bg-[#a32f2f] transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M7 14H5v5h5v-2H7v-3zm12 5h-3v2h5v-5h-2v3zM7 7h3V5H5v5h2V7zm10 0h3v3h2V5h-5v2z" />
+            </svg>
+          </button>
+        </div>
+      </ng-container>
+    </div>
+   
+    <!-- Template para carga/error -->
+    <ng-template #loading>
+      <div class="w-[90%] md:w-[1000px] h-[500px] bg-gray-200 rounded-2xl shadow-lg flex items-center justify-center">
+        <p class="text-xl text-gray-500">Cargando video...</p>
+      </div>
+    </ng-template>
+  
+  </section>

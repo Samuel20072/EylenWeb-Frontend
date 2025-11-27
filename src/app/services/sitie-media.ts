@@ -47,6 +47,16 @@ export class SitieMediaService {
   }
 
   /**
+   * ⭐ NUEVA FUNCIÓN: Obtiene media filtrando por la sección.
+   * Asume que el backend soporta la consulta con un parámetro 'section'.
+   * @param section El identificador de la sección (ej. 'homevideo').
+   */
+  getMediaBySection(section: string): Observable<SitieMedia[]> {
+    // Llama al endpoint GET /site-media?section=homevideo
+    return this.http.get<SitieMedia[]>(`${this.apiUrl}?section=${section}`);
+  }
+
+  /**
    * Sube el archivo y los metadatos al backend (modo local).
    * El backend espera el archivo bajo el campo 'file' en un FormData.
    * @param data Metadatos de la media (title, section, type).

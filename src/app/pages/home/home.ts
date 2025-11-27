@@ -11,6 +11,7 @@ import {ComentariosSection} from '../../components/home/comentarios-section/come
 
 @Component({
   selector: 'app-home',
+  standalone: true,
   imports: [Hero, VideoComponent, TestimonialsSection, ProblemsSection, StorySection, MissionVisionSection,ExperienciasSection,PaquetesSection,ComentariosSection],
   templateUrl: './home.html',
 })
