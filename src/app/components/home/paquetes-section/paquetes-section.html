@@ -4,23 +4,25 @@
   </h2>
 
   <div class="flex flex-wrap justify-center gap-12">
-    <app-paquetes-cards
-      *ngFor="let pack of packs"
-      [title]="pack.title"
-      [price]="pack.price"
-      [items]="pack.items"
-      [diamonds]="pack.diamonds"
-      [buttonColor]="pack.buttonColor"
-      [buttonTextColor]="pack.buttonTextColor"
-      [backgroundColor]="pack.backgroundColor"
-      (selectPack)="openModal(pack)"
-    ></app-paquetes-cards>
+      <ng-container *ngIf="packs$ | async as packs">
+          <app-paquetes-cards
+              *ngFor="let pack of packs"
+              
+              [pack]="pack"
+              
+              [diamonds]="calculateDiamonds(pack.sessionsCount)"
+              [backgroundColor]="getBackgroundColor(pack.price)"
+              
+              [buttonColor]="'#fff'" 
+              [buttonTextColor]="'#B5121B'" 
+              
+              (selectPack)="openModal(pack)"
+          ></app-paquetes-cards>
+      </ng-container>
   </div>
-
-  <!-- ✅ Modal -->
-  <app-form-modal
-  [isOpen]="isModalOpen"
-  [selectedPackage]="selectedPackage"
-  (close)="isModalOpen = false"
-></app-form-modal>
+    <app-form-modal
+      [isOpen]="isModalOpen"
+      [selectedPackage]="selectedPackage"
+      (close)="closeModal()"
+    ></app-form-modal>
 </section>

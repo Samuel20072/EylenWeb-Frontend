@@ -1,0 +1,46 @@
+<!-- El modal de estado siempre está presente en el DOM para permitir animaciones de cierre -->
+<div class="modal-overlay" #overlay (click)="onClose()">
+    <!-- Modal -->
+    <div class="modal-content" #modal (click)="$event.stopPropagation()">
+  
+        <!-- Contenedor de Status (Icono, Título y Mensaje) -->
+        <div class="flex flex-col items-center justify-center text-center">
+            
+            <!-- Icono Condicional (Éxito o Error) -->
+            <div class="p-4 rounded-full mb-4" 
+                [ngClass]="{
+                    'bg-green-100': status === 'success',
+                    'bg-red-100': status === 'error'
+                }">
+                <!-- Icono de Éxito (Checkmark) -->
+                <svg *ngIf="status === 'success'" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <!-- Icono de Error (Warning/Alert) -->
+                <svg *ngIf="status === 'error'" xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.3 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+
+            <!-- Título -->
+            <h2 class="text-2xl font-extrabold mb-2"
+                [ngClass]="{
+                    'text-green-700': status === 'success',
+                    'text-red-700': status === 'error'
+                }">
+                {{ title }}
+            </h2>
+  
+            <!-- Mensaje -->
+            <p class="text-gray-600 mb-6 leading-relaxed">
+                {{ message }}
+            </p>
+        </div>
+  
+        <!-- Botón de Cerrar (para cierre manual) -->
+        <button (click)="onClose()" class="btn-close">
+            {{ closeText }}
+        </button>
+  
+    </div>
+</div>

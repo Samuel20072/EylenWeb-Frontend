@@ -1,191 +1,293 @@
-import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { gsap } from 'gsap';
 import { SitieMediaService } from '../../../services/sitie-media'; 
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'; // Importar DomSanitizer
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser'; 
+import { take } from 'rxjs/operators'; 
 
 @Component({
-  selector: 'app-video',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './video.component.html',
-  styleUrl: './video.component.css'
+  selector: 'app-video',
+  standalone: true,
+  imports: [CommonModule],
+  // Nota: Se ha eliminado styleUrl porque no se utiliza un archivo CSS externo.
+  template: `
+    <section class="bg-[#FFB1B8] flex flex-col items-center py-12">
+      <h2 class="text-xl md:text-2xl font-playfair text-[#1A1A1A] mb-4">
+        ¿Qué es el baile consciente?
+      </h2>
+
+      <!-- Contenedor principal del Video -->
+      <div
+        *ngIf="videoReady; else loading"
+        class="relative w-[90%] md:w-[1000px] h-[500px] bg-gray-200 rounded-2xl shadow-lg overflow-hidden">
+        
+        <!-- Reproductor de YouTube (IFRAME) -->
+        <iframe
+          *ngIf="isYouTubeUrl && sanitizedVideoUrl"
+          [src]="sanitizedVideoUrl"
+          title="YouTube Video Player"
+          frameborder="0"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          class="w-full h-full object-cover">
+        </iframe>
+
+        <!-- Reproductor de Video Nativo (Si la URL no es de YouTube) -->
+        <video
+          *ngIf="!isYouTubeUrl"
+          #videoPlayer
+          class="w-full h-full object-cover"
+          [muted]="isMuted"
+          autoplay
+          loop
+          playsinline
+          (click)="togglePlay()"
+          (ended)="onVideoEnded()">
+          <!-- Nota: videoUrl contendrá la URL de Cloudinary o el fallback, según corresponda -->
+          <source [src]="videoUrl" type="video/mp4"> 
+          Tu navegador no soporta el elemento video.
+        </video>
+
+        <!-- Overlay y Controles (SOLO visibles para Video Nativo) -->
+        <ng-container *ngIf="!isYouTubeUrl">
+          <!-- Overlay de Play/Pause -->
+          <div #overlay
+            class="absolute inset-0 flex justify-center items-center bg-black/20 transition-opacity duration-500"
+            *ngIf="!isPlaying">
+            <div
+              class="w-16 h-16 bg-white rounded-full flex justify-center items-center shadow-md cursor-pointer hover:bg-gray-50 transition"
+              (click)="togglePlay()">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Controles de volumen y pantalla completa -->
+          <div class="absolute bottom-4 left-4 right-4 flex justify-between items-center">
+            <button
+              (click)="toggleMute()"
+              class="volume-btn bg-[#C1121F] text-white p-2 rounded-lg shadow-md hover:bg-[#a32f2f] transition">
+              <svg *ngIf="!isMuted" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M3 10v4h4l5 5V5L7 10H3zm13.5 2c0-1.77-.77-3.29-2-4.3v8.6c1.23-1.01 2-2.53 2-4.3z" />
+              </svg>
+              <svg *ngIf="isMuted" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M16.5 12c0-1.77-.77-3.29-2-4.3v2.3l2 2V12zm2-2.5l2 2V7h-6l2 2.5zM2 4.27L4.28 2 21 18.72 18.73 21l-3-3H7v-4.27l-4-4z"/>
+              </svg>
+            </button>
+
+            <button
+              (click)="toggleFullscreen()"
+              class="fullscreen-btn bg-[#C1121F] text-white p-2 rounded-lg shadow-md hover:bg-[#a32f2f] transition">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M7 14H5v5h5v-2H7v-3zm12 5h-3v2h5v-5h-2v3zM7 7h3V5H5v5h2V7zm10 0h3v3h2V5h-5v2z" />
+              </svg>
+            </button>
+          </div>
+        </ng-container>
+      </div>
+      
+      <!-- Template de Carga (Loading) - Sólo se mostrará muy brevemente al inicio si el respaldo es rápido. -->
+      <ng-template #loading>
+        <div class="w-[90%] md:w-[1000px] h-[500px] bg-gray-200 rounded-2xl shadow-lg flex items-center justify-center">
+          <p class="text-xl text-gray-500">Cargando video...</p>
+        </div>
+      </ng-template>
+    </section>
+  `
 })
-export class VideoComponent implements OnInit, AfterViewInit { 
-  
-  // Propiedades
-  videoUrl: string | null = null; 
-  sanitizedVideoUrl: SafeResourceUrl | null = null; // Para URL segura de YouTube
-  isYouTubeUrl: boolean = false; // Flag para determinar el tipo de reproductor
+export class VideoComponent implements OnInit { 
+  
+  // URL de YouTube que se demostró que funciona como respaldo
+  private readonly FALLBACK_YOUTUBE_URL = 'https://youtu.be/-D1IEXVvrSw';
+  
+  // Propiedades de estado
+  videoUrl: string | null = null; 
+  sanitizedVideoUrl: SafeResourceUrl | null = null;
+  isYouTubeUrl: boolean = false;
+  videoReady: boolean = false; // Se establecerá en true en ngOnInit
 
-  @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLVideoElement>;
-  @ViewChild('overlay') overlay!: ElementRef<HTMLDivElement>;
+  // Variables para referencias del DOM (Solo necesarias para video nativo)
+  private _videoPlayer!: ElementRef<HTMLVideoElement>;
+  @ViewChild('overlay') overlay!: ElementRef<HTMLDivElement>;
 
-  isPlaying = false;
-  isMuted = true; // inicia silenciado
+  @ViewChild('videoPlayer') 
+  set videoPlayer(el: ElementRef<HTMLVideoElement>) {
+      if (el) {
+          this._videoPlayer = el;
+          this.animateVideoPlayer(el.nativeElement);
+      }
+  }
 
-  // INYECTAR EL SERVICIO Y EL SANITIZER
-  constructor(
-    private sitieMediaService: SitieMediaService,
-    private sanitizer: DomSanitizer // Inyectar DomSanitizer
-  ) {}
+  get videoPlayer(): ElementRef<HTMLVideoElement> {
+      return this._videoPlayer;
+  }
 
-  ngOnInit() {
-    this.loadVideoUrl();
-  }
+  isPlaying = false;
+  isMuted = true;
 
-  loadVideoUrl() {
-    this.sitieMediaService.getMediaBySection('homevideo').subscribe(
-      (mediaItems) => {
-        const video = mediaItems.find(item => item.type === 'video' && item.is_active); 
-        
-        if (video) {
-          this.videoUrl = video.url;
-          console.log('🔍 URL CRUDA (DB) obtenida:', this.videoUrl); // Verifica la URL cruda
-          
-          // CORRECCIÓN DE FORMATO CLOUDINARY (temporal hasta arreglar el backend)
-          if (this.videoUrl.includes('res.cloudinary.com') && this.videoUrl.includes('/raw/upload/')) {
-            // 1. Reemplazar /raw/upload/ por /video/upload/
-            this.videoUrl = this.videoUrl.replace('/raw/upload/', '/video/upload/');
-            
-            // 2. Asegurar que tiene extensión si no la tiene (asumimos .mp4)
-            if (!this.videoUrl.includes('.')) {
-              this.videoUrl += '.mp4';
-            }
-            console.log('⚠️ URL de Cloudinary corregida para reproducción:', this.videoUrl);
-          }
+  constructor(
+    private sitieMediaService: SitieMediaService,
+    private sanitizer: DomSanitizer
+  ) {}
 
+  ngOnInit() {
+    // 1. Cargamos el URL de respaldo inmediatamente para evitar el estado "Cargando"
+    // Es mejor mostrar el video de respaldo que nada.
+    this.processUrl(this.FALLBACK_YOUTUBE_URL);
+    
+    // 2. Intentamos cargar el URL real del servicio en segundo plano
+    this.loadRealVideoFromService();
+  }
 
-          // LÓGICA DE DETECCIÓN DE YOUTUBE
-          this.isYouTubeUrl = this.videoUrl.includes('youtube.com') || this.videoUrl.includes('youtu.be');
+  /**
+   * Intenta obtener la URL del video del servicio y la aplica si es válida.
+   */
+  loadRealVideoFromService() {
+    this.sitieMediaService.getMediaBySection('homevideo').pipe(take(1)).subscribe({
+        next: (mediaItems) => {
+            const video = mediaItems.find(item => item.type === 'video' && item.is_active); 
+            
+            if (video && video.url) {
+                // Si encontramos una URL válida, sobrescribimos la de respaldo.
+                this.processUrl(video.url);
+            }
+            // Si no hay URL en el servicio, mantenemos la de respaldo (que ya se cargó en ngOnInit).
+        },
+        error: (error) => {
+            // El servicio falló, no hacemos nada ya que el respaldo ya está visible.
+            console.error('Error al obtener el media de la API. Se mantiene la URL de respaldo de YouTube.', error);
+        }
+    });
+  }
 
-          if (this.isYouTubeUrl) {
-            // Transformar la URL de YouTube para usar el reproductor embebido (embed)
-            const embedUrl = this.convertToEmbedUrl(this.videoUrl);
-            
-            if (embedUrl.includes('/embed/')) { // Verificar si se pudo extraer el ID correctamente
-              this.sanitizedVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
-              console.log('✅ URL de YouTube (Embed) generada:', embedUrl); 
-            } else {
-              console.error('❌ ERROR: No se pudo extraer el ID del video de YouTube. Revisa el formato de la URL guardada en la base de datos.');
-              this.videoUrl = null; // Detener la carga para no mostrar el iframe vacío
-            }
+  /**
+   * Procesa la URL final, configura el reproductor y marca como listo.
+   */
+  private processUrl(url: string) {
+    this.videoUrl = url;
 
-          } else {
-            // Es una URL de Cloudinary o directa (se usará en la etiqueta <video>)
-            console.log('✅ URL de video nativo a cargar:', this.videoUrl); 
-          }
-        } else {
-          console.warn('No se encontró un video activo para la sección homevideo');
-          this.videoUrl = null; 
-          this.sanitizedVideoUrl = null;
-        }
-      },
-      (error) => {
-        console.error('Error al obtener el media de la API:', error);
-        this.videoUrl = null;
-        this.sanitizedVideoUrl = null;
-      }
-    );
-  }
+    if (this.isYouTubeLink(this.videoUrl)) {
+        this.isYouTubeUrl = true;
+        this.sanitizedVideoUrl = this.convertToEmbedUrl(this.videoUrl);
+    } else {
+        this.isYouTubeUrl = false;
+        
+        // Lógica de corrección de Cloudinary si aplica
+        if (this.videoUrl!.includes('res.cloudinary.com') && this.videoUrl!.includes('/raw/upload/')) {
+            this.videoUrl = this.videoUrl!.replace('/raw/upload/', '/video/upload/');
+            if (!this.videoUrl.includes('.')) {
+                this.videoUrl += '.mp4';
+            }
+        }
+    }
+    // ESTO es crucial: Asegura que el contenedor del video se muestre
+    this.videoReady = true;
+  }
 
-  // Helper para convertir URL de YouTube a URL de Embed
-  private convertToEmbedUrl(url: string): string {
-    let videoId = '';
-    // Patrón para URLs estándar: https://www.youtube.com/watch?v=VIDEO_ID
-    const matchStandard = url.match(/[?&]v=([^&]+)/);
-    if (matchStandard) {
-      videoId = matchStandard[1];
-    } else {
-      // Patrón para URLs cortas: https://youtu.be/VIDEO_ID
-      const matchShort = url.match(/youtu\.be\/([^?]+)/);
-      if (matchShort) {
-        videoId = matchShort[1];
-      }
-    }
+  /**
+   * Determina si la URL es un enlace conocido de YouTube.
+   */
+  private isYouTubeLink(url: string): boolean {
+    const lowerUrl = url.toLowerCase();
+    return lowerUrl.includes('youtube.com') || lowerUrl.includes('youtu.be');
+  }
 
-    if (videoId) {
-      // Agregar parámetros para deshabilitar controles y poner autoplay/mute
-      return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0`;
-    }
-    return url; 
-  }
+  /**
+   * Convierte una URL de YouTube (larga o corta) a una URL de inserción segura (embed).
+   */
+  private convertToEmbedUrl(url: string): SafeResourceUrl {
+    let videoId = '';
+    
+    // Extraer ID de 'watch?v=' (Formato largo)
+    if (url.includes('watch?v=')) {
+        videoId = url.split('watch?v=')[1].split('&')[0];
+    } 
+    // Extraer ID de 'youtu.be/' (Formato corto)
+    else if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1].split('?')[0];
+    }
+    
+    // URL de inserción (embed) segura.
+    const embedUrl = `https://www.youtube.com/embed/${videoId}?controls=1&modestbranding=1`;
+    
+    return this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl); 
+  }
 
+  // --- Animación y Controles (Solo para Video Nativo) ---
+  
+  animateVideoPlayer(videoElement: HTMLVideoElement) {
+    gsap.from(videoElement, {
+        opacity: 0,
+        scale: 0.95,
+        duration: 1,
+        ease: 'power2.out'
+    });
+  }
+  
+  togglePlay() {
+    if (this.isYouTubeUrl) return; 
+    
+    if (!this.videoPlayer) return; 
+    const video = this.videoPlayer.nativeElement;
 
-  ngAfterViewInit() {
-    if (this.videoPlayer && !this.isYouTubeUrl) {
-      // animación de aparición inicial del contenedor del video (SOLO PARA VIDEO NATIVO)
-      gsap.from(this.videoPlayer.nativeElement, {
-        opacity: 0,
-        scale: 0.95,
-        duration: 1,
-        ease: 'power2.out'
-      });
-    }
-  }
+    if (video.paused) {
+      video.play();
+      this.isPlaying = true;
+      if (this.overlay) {
+        gsap.to(this.overlay.nativeElement, { opacity: 0, duration: 0.6, ease: 'power2.inOut' });
+      }
+    } else {
+      video.pause();
+      this.isPlaying = false;
+      if (this.overlay) {
+        gsap.to(this.overlay.nativeElement, { opacity: 1, duration: 0.6, ease: 'power2.inOut' });
+      }
+    }
+  }
 
-  togglePlay() {
-    // Solo aplica a video nativo
-    if (!this.videoPlayer || this.isYouTubeUrl) return; 
-    const video = this.videoPlayer.nativeElement;
+  toggleMute() {
+    if (this.isYouTubeUrl) return; 
+    
+    if (!this.videoPlayer) return;
+    
+    const video = this.videoPlayer.nativeElement;
+    this.isMuted = !this.isMuted;
+    video.muted = this.isMuted;
 
-    if (video.paused) {
-      video.play();
-      this.isPlaying = true;
-      // animación de desvanecimiento del overlay
-      if (this.overlay) {
-        gsap.to(this.overlay.nativeElement, { opacity: 0, duration: 0.6, ease: 'power2.inOut' });
-      }
-    } else {
-      video.pause();
-      this.isPlaying = false;
-      // animación para mostrar overlay de nuevo
-      if (this.overlay) {
-        gsap.to(this.overlay.nativeElement, { opacity: 1, duration: 0.6, ease: 'power2.inOut' });
-      }
-    }
-  }
+    gsap.fromTo(
+      '.volume-btn',
+      { scale: 1 },
+      { scale: 0.9, duration: 0.2, yoyo: true, repeat: 1, ease: 'power1.inOut' }
+    );
+  }
 
-  toggleMute() {
-    // Solo aplica a video nativo
-    if (!this.videoPlayer || this.isYouTubeUrl) return; 
-    const video = this.videoPlayer.nativeElement;
-    this.isMuted = !this.isMuted;
-    video.muted = this.isMuted;
+  toggleFullscreen() {
+    if (this.isYouTubeUrl) return; 
 
-    // pequeña animación del botón al presionar
-    gsap.fromTo(
-      '.volume-btn',
-      { scale: 1 },
-      { scale: 0.9, duration: 0.2, yoyo: true, repeat: 1, ease: 'power1.inOut' }
-    );
-  }
+    if (!this.videoPlayer) return;
+    
+    const video = this.videoPlayer.nativeElement;
 
-  toggleFullscreen() {
-    // Solo aplica a video nativo
-    if (!this.videoPlayer || this.isYouTubeUrl) return; 
-    const video = this.videoPlayer.nativeElement;
+    gsap.fromTo(
+      '.fullscreen-btn',
+      { rotate: 0 },
+      { rotate: 20, duration: 0.3, yoyo: true, repeat: 1, ease: 'back.out(1.7)' }
+    );
 
-    gsap.fromTo(
-      '.fullscreen-btn',
-      { rotate: 0 },
-      { rotate: 20, duration: 0.3, yoyo: true, repeat: 1, ease: 'back.out(1.7)' }
-    );
+    if (!document.fullscreenElement) {
+      video.requestFullscreen().catch(err => console.error('Error pantalla completa:', err));
+    } else {
+      document.exitFullscreen();
+    }
+  }
 
-    if (!document.fullscreenElement) {
-      video.requestFullscreen().catch(err => console.error('Error pantalla completa:', err));
-    } else {
-      document.exitFullscreen();
-    }
-  }
+  onVideoEnded() {
+    if (this.isYouTubeUrl) return;
 
-  onVideoEnded() {
-    // Solo aplica a video nativo
-    if (this.isYouTubeUrl) return; 
-    
-    this.isPlaying = false;
-    if (this.overlay) {
-      gsap.to(this.overlay.nativeElement, { opacity: 1, duration: 0.6, ease: 'power2.inOut' });
-    }
-  }
+    this.isPlaying = false;
+    if (this.overlay) {
+      gsap.to(this.overlay.nativeElement, { opacity: 1, duration: 0.6, ease: 'power2.inOut' });
+    }
+  }
 }

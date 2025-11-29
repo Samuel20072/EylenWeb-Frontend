@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router'; // Importamos Router
+import { Router } from '@angular/router'; // Importamos Router
 import { NavbarItemComponent } from './navbar-item';
 import { ButtonComponent } from '../button/button';
 import { AuthService } from '../../services/auth'; // Aseguramos la ruta correcta del servicio
@@ -18,7 +18,7 @@ interface User {
 @Component({
   selector: 'app-navbar',
   standalone: true, 
-  imports: [NavbarItemComponent, ButtonComponent, CommonModule, RouterLink], 
+  imports: [NavbarItemComponent, ButtonComponent, CommonModule], 
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })

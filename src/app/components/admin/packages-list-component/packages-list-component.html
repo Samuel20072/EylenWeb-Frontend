@@ -1,74 +1,77 @@
 <div #container class="bg-white rounded-xl p-6 shadow-md w-full h-full flex flex-col">
-    <h3 class="text-xl font-medium text-[#310D09] mb-4">Lista de Paquetes</h3>
-  
-    <!-- 🔍 Buscador -->
-    <div class="relative mb-4">
-      <input
-        type="text"
-        placeholder="Buscar paquete..."
-        (input)="filterPackages($event)"
-        class="w-full p-2 pl-10 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#C1121F] outline-none transition-all"
-      />
-      <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"></i>
-    </div>
-  
-    <!-- 📦 Lista de paquetes -->
+  <h3 class="text-xl font-medium text-[#310D09] mb-4">Lista de Paquetes</h3>
+
+  <div class="relative mb-4">
+    <input
+      type="text"
+      placeholder="Buscar paquete..."
+      (input)="filterPackages($event)"
+      class="w-full p-2 pl-10 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#C1121F] outline-none transition-all"
+    />
+    <i class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"></i>
+  </div>
+
+  <div *ngIf="isLoading" class="text-center py-8 text-gray-500">
+    <i class="fa-solid fa-spinner fa-spin-pulse mr-2"></i> Cargando paquetes...
+  </div>
+
+  <div *ngIf="errorMessage" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+      <strong class="font-bold">Error:</strong>
+      <span class="block sm:inline"> {{ errorMessage }}</span>
+  </div>
+
+  <div
+    *ngIf="!isLoading && !errorMessage"
+    class="space-y-3 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
+    style="max-height: 500px;"
+  >
     <div
-      class="space-y-3 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100"
-      style="max-height: 500px;"
+      *ngFor="let p of filteredPackages"
+      #packageCard
+      class="package-card flex flex-col gap-3 p-5 rounded-lg cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
+      [ngClass]="p.isActive ? 'bg-[#f0fdf4]' : 'bg-[#fef2f2]'"
     >
-      <div
-        *ngFor="let p of filteredPackages"
-        #packageCard
-        class="package-card flex flex-col gap-3 p-5 rounded-lg cursor-pointer hover:shadow-lg hover:scale-[1.02] transition-all duration-300"
-        [ngClass]="p.active ? 'bg-[#f0fdf4]' : 'bg-[#fef2f2]'"
-      >
-        <!-- Parte superior -->
-        <div class="flex justify-between items-center">
-          <h4 class="font-semibold text-lg text-[#310D09]">
-            {{ p.name }}
-          </h4>
-          <span
-            class="text-xs px-3 py-1 rounded-md font-medium"
-            [ngClass]="p.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
-          >
-            {{ p.active ? 'Activo' : 'Inactivo' }}
-          </span>
-        </div>
-  
-        <!-- Descripción -->
-        <p class="text-gray-600 text-sm leading-snug">
-          {{ p.description }}
-        </p>
-  
-        <!-- Detalles -->
-        <div class="flex justify-between text-sm text-gray-500">
-          <span>💰 {{ p.price | currency:'COP':'symbol':'1.0' }}</span>
-          <span>🎓 {{ p.classes }} clases</span>
-          <span>🏷️ {{ p.level }}</span>
-        </div>
-  
-        <!-- Usuarios -->
-        <div class="text-xs text-gray-500">
-          👥 {{ p.users }} usuarios inscritos
-        </div>
-  
-        <!-- Acciones -->
-        <div class="flex justify-end gap-2 mt-2">
-          <button
-            (click)="toggleActive(p)"
-            class="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1 rounded-md"
-          >
-            {{ p.active ? 'Desactivar' : 'Activar' }}
-          </button>
-          <button
-            (click)="deletePackage(p)"
-            class="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded-md"
-          >
-            Eliminar
-          </button>
-        </div>
+      <div class="flex justify-between items-center">
+        <h4 class="font-semibold text-lg text-[#310D09]">
+          {{ p.name }}
+        </h4>
+        <span
+          class="text-xs px-3 py-1 rounded-md font-medium"
+          [ngClass]="p.isActive ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'"
+        >
+          {{ p.isActive ? 'Activo' : 'Inactivo' }}
+        </span>
+      </div>
+
+      <p class="text-gray-600 text-sm leading-snug">
+        {{ p.description || 'Sin descripción.' }}
+      </p>
+
+      <div class="flex justify-between text-sm text-gray-500">
+        <span>💰 {{ p.price | currency:'COP':'symbol':'1.0' }}</span>
+        <span>🎓 {{ p.sessionsCount }} sesiones</span>
+        <span>🗓️ {{ p.durationWeeks }} semanas</span>
+      </div>
+
+      <div class="flex justify-end gap-2 mt-2">
+        <button
+          (click)="toggleActive(p); $event.stopPropagation()"
+          class="bg-green-500 hover:bg-green-600 text-white text-xs px-3 py-1 rounded-md"
+        >
+          {{ p.isActive ? 'Desactivar' : 'Activar' }}
+        </button>
+        <button
+          (click)="deletePackage(p); $event.stopPropagation()"
+          class="bg-red-500 hover:bg-red-600 text-white text-xs px-3 py-1 rounded-md"
+        >
+          Eliminar
+        </button>
       </div>
     </div>
+
+    <div *ngIf="filteredPackages.length === 0" class="text-center py-8 text-gray-500">
+      No se encontraron paquetes con ese criterio.
+    </div>
+
   </div>
-  
+</div>
