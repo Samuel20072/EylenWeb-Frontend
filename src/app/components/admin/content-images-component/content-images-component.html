@@ -1,30 +1,48 @@
 <div class="bg-white p-6 rounded-xl shadow-md flex flex-col gap-6">
-    <div class="flex items-center justify-between">
-      <h2 class="text-lg font-semibold text-[#340803]">Imágenes</h2>
-      <label class="bg-[#C1121F] text-white px-4 py-2 rounded-lg cursor-pointer">
-        <i class="fa-solid fa-upload mr-2"></i> Subir imagen
-        <input type="file" class="hidden" (change)="uploadImage($event)" />
-      </label>
-    </div>
-  
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div
-        *ngFor="let img of images"
-        class="relative group rounded-xl overflow-hidden shadow-md"
-      >
-        <img [src]="img.url" [alt]="img.title" class="w-full h-48 object-cover" />
-        <div
-          class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition flex flex-col justify-center items-center text-white"
+  <div class="flex items-center justify-between">
+    <h2 class="text-lg font-semibold text-[#340803]">Imágenes</h2>
+    <button
+      (click)="openModal()"
+      class="bg-[#C1121F] text-white px-4 py-2 rounded-lg hover:bg-[#9b0d16] transition"
+    >
+      <i class="fa-solid fa-plus mr-2"></i> Agregar Imagen
+    </button>
+  </div>
+
+  <p *ngIf="loading" class="text-gray-500">Cargando Imágenes...</p>
+  <p *ngIf="!loading && imagesList.length === 0" class="text-gray-500">
+    No hay Imágenes cargadas. Usa el botón "Agregar Imagen".
+  </p>
+
+  <div
+    *ngIf="!loading && imagesList.length > 0"
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
+  >
+    <div
+      *ngFor="let img of imagesList"
+      class="image-card bg-[#FFB1B8]/20 rounded-xl shadow-md overflow-hidden relative group"
+    >
+      <img
+        [src]="img.url"
+        [alt]="img.title"
+        class="w-full h-48 object-cover rounded-t-xl"
+      />
+      
+      <div class="p-3 flex justify-between items-center">
+        <p class="text-sm font-medium text-[#340803]">{{ img.title }}</p>
+        <button
+          (click)="deleteImage(img.id)"
+          class="text-red-600 hover:text-red-800 transition"
         >
-          <p class="text-sm mb-2">{{ img.title }}</p>
-          <button
-            (click)="deleteImage(img.id)"
-            class="bg-red-500 hover:bg-red-600 px-3 py-1 rounded-lg text-xs"
-          >
-            Eliminar
-          </button>
-        </div>
+          <i class="fa-solid fa-trash"></i>
+        </button>
       </div>
     </div>
   </div>
-  
+
+  <app-upload-media-modal
+    *ngIf="isModalOpen"
+    (closeModal)="closeModal($event)"
+    [mediaType]="'image'"
+  ></app-upload-media-modal>
+</div>

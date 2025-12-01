@@ -26,7 +26,7 @@
 
     <div class="flex justify-center md:justify-start pt-4" gsap-fade-delay>
       <app-button
-        text="Descubrir mi poder"
+        [text]="isLoggedIn ? 'Mis clases' : 'Descubrir mi poder'"
         color="#C1121F"
         hoverColor="#a32f2f"
         type="button"
@@ -54,17 +54,30 @@
   </div>
 
   <!-- Imagen -->
-  <div
-    class="mt-8 md:mt-0 md:w-1/2 flex justify-center relative"
-    gsap-parallax
-  >
-    <img
-      src="../../../assets/images/hero1.png"
-      alt="Eylen bailando"
-      class="h-[480px] md:h-[530px] rounded-2xl object-cover  transform transition-transform duration-700"
-    />
-    <div
-      class="absolute inset-0 bg-gradient-to-tr from-[#C1121F]/5 to-transparent rounded-2xl"
-    ></div>
-  </div>
+  <!-- Imagen -->
+<div
+class="mt-8 md:mt-0 md:w-1/2 flex justify-center relative"
+gsap-parallax
+>
+<img
+  *ngIf="heroImageUrl; else defaultImage"
+  [src]="heroImageUrl"
+  alt="Hero dinámico"
+  class="h-[480px] md:h-[530px] rounded-2xl object-cover transform transition-transform duration-700"
+/>
+
+<!-- Imagen por defecto si no existe en BD -->
+<ng-template #defaultImage>
+  <img
+    src="../../../assets/images/hero1.png"
+    alt="Eylen bailando"
+    class="h-[480px] md:h-[530px] rounded-2xl object-cover transform transition-transform duration-700"
+  />
+</ng-template>
+
+<div
+  class="absolute inset-0 bg-gradient-to-tr from-[#C1121F]/5 to-transparent rounded-2xl"
+></div>
+</div>
+
 </section>

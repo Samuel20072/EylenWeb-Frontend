@@ -6,7 +6,7 @@ import { Contacto } from './pages/contacto/contacto';
 import { Register } from './pages/register/register';
 import { Login } from './pages/login/login';
 import { Admin } from './pages/admin/admin';
-
+import {ProfileComponent} from '../app/pages/profile/profile'
 import { AdminDashboardComponent } from './components/admin/admin-dashboard-component/admin-dashboard-component';
 import { DashboardUsuariosComponent } from './components/admin/dashboard-usuarios-component/dashboard-usuarios-component';
 import { StatsCardComponent } from './components/admin/stats-card-component/stats-card-component';
@@ -15,22 +15,27 @@ import { UpcomingCalendarComponent } from './components/admin/upcoming-calendar-
 import { DashboardContenidoComponent } from './components/admin/dashboard-contenido-component/dashboard-contenido-component';
 import { UserDetailComponent } from './components/admin/user-detail-component/user-detail-component';
 
-// 🛡️ IMPORTA EL ROLE GUARD
+// 🛡️ IMPORTA LOS GUARDS
+import { AuthGuard } from './services/auth.guard';
 import { RoleGuard } from '../guards/role.guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
+
+  // 🔐 Rutas accesibles solo si estás logueado
   { path: 'clases', component: Class },
+
   { path: 'sobre-mi', component: SobreMi },
   { path: 'contacto', component: Contacto },
   { path: 'registro', component: Register },
   { path: 'login', component: Login },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
 
   // 🛡️ PROTECCIÓN PARA ADMIN
   {
     path: 'admin',
     component: Admin,
-    canActivate: [RoleGuard],
+    canActivate: [AuthGuard, RoleGuard],  // 👈 Los dos
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: AdminDashboardComponent },

@@ -1,14 +1,14 @@
-<nav class="flex justify-between items-center py-4 px-8 bg-[#f9dada] shadow-lg">
+<nav class="flex justify-between items-center py-4 px-8 bg-[#f9dada]  relative">
   <h1 class="text-3xl font-normal text-[#340803] font-serif tracking-wider">Eylen</h1>
-  
+
   <ul class="flex gap-8 text-[#340803] font-semibold text-lg">
     <app-navbar-item name="INICIO" link="/"></app-navbar-item>
     <app-navbar-item name="CLASES" link="/clases"></app-navbar-item>
     <app-navbar-item name="SOBRE MÍ" link="/sobre-mi"></app-navbar-item>
     <app-navbar-item name="CONTACTO" link="/contacto"></app-navbar-item>
   </ul>
-  
-  <!-- Mostrar botón de inicio de sesión si NO está logeado -->
+
+  <!-- Botón iniciar sesión -->
   @if (!isLoggedIn) {
     <app-button 
       text="Iniciar sesión" 
@@ -20,19 +20,43 @@
     </app-button>
   }
 
-  <!-- Mostrar nombre y avatar si SÍ está logeado -->
+  <!-- Usuario logueado -->
   @if (isLoggedIn) {
-    <div class="flex items-center gap-3">
-      <!-- Nombre del usuario (oculto en pantallas pequeñas) -->
-      <span class="text-[#340803] font-medium text-lg hidden sm:inline-block">
-        Hola, {{ userName }}
-      </span>
-
-      <!-- Avatar con click para navegación por rol -->
+    <div class="relative">
+      <!-- Avatar -->
       <div 
         class="w-10 h-10 rounded-full overflow-hidden cursor-pointer transition transform hover:scale-105 shadow-md border-2 border-[#C1121F] hover:border-red-700"
-        (click)="onAvatarClick()">
+        (click)="toggleMenu()">
         <img [src]="userAvatarUrl" alt="Avatar del usuario" class="w-full h-full object-cover">
+      </div>
+
+      <!-- MENÚ DESPLEGABLE -->
+      <div 
+        #dropdownMenu
+        *ngIf="menuOpen"
+        class="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-3 opacity-0 pointer-events-auto z-50 origin-top-right"
+      >
+        <p class="px-4 py-2 text-sm text-gray-600 border-b">Hola, {{ userName }}</p>
+
+        <button 
+          class="w-full text-left px-4 py-2 hover:bg-gray-100 transition"
+          (click)="goToProfile()">
+          Perfil
+        </button>
+
+        @if (user?.role === 'admin') {
+          <button 
+            class="w-full text-left px-4 py-2 hover:bg-gray-100 transition"
+            (click)="goToAdmin()">
+            Panel Admin
+          </button>
+        }
+
+        <button 
+          class="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600 font-semibold transition"
+          (click)="logout()">
+          Cerrar sesión
+        </button>
       </div>
     </div>
   }

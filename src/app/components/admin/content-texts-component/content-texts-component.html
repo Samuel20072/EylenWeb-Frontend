@@ -1,50 +1,114 @@
 <div class="bg-white p-6 rounded-xl shadow-md flex flex-col gap-6">
-    <h2 class="text-lg font-semibold text-[#340803] mb-2">Textos del sitio</h2>
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-bold text-[#340803]">Gestión de Textos del Sitio</h2>
+       
+        <!-- Botón de Creación -->
+        <button
+          (click)="startCreate()"
+          [disabled]="isCreating || editingId !== null"
+          class="bg-[#C1121F] text-white px-4 py-2 rounded-lg font-semibold transition hover:bg-[#9b0d16] disabled:opacity-50"
+        >
+          <i class="fa-solid fa-plus mr-2"></i> Crear Nuevo Texto
+        </button>
+      </div>
   
-    <div class="flex flex-col gap-4">
-      <div
-        *ngFor="let t of texts"
-        class="text-card bg-[#FFB1B8]/20 p-4 rounded-xl shadow-md hover:shadow-lg transition"
-      >
-        <div class="flex justify-between items-start">
-          <h3 class="font-semibold text-[#340803]">{{ t.section }}</h3>
-          <button
-            *ngIf="editingId !== t.id"
-            (click)="editText(t)"
-            class="text-[#C1121F] hover:text-[#9b0d16] transition"
-          >
-            <i class="fa-solid fa-pen-to-square"></i>
-          </button>
-        </div>
+      <!-- Formulario de Creación (Aparece si isCreating es true) -->
+      <div
+        *ngIf="isCreating"
+        class="creation-form bg-[#FFB1B8]/40 p-5 rounded-xl border border-[#C1121F]/50 shadow-inner"
+      >
+        <h3 class="font-semibold text-[#340803] mb-3">Nuevo Bloque de Texto</h3>
+        <div class="flex flex-col gap-3">
+          <input
+            [(ngModel)]="newText.section"
+            placeholder="Identificador de Sección (ej: 'home_title')"
+            class="border rounded-lg p-2 text-sm text-[#340803] focus:outline-[#C1121F]"
+          />
+          <textarea
+            [(ngModel)]="newText.content"
+            rows="3"
+            placeholder="Contenido del texto"
+            class="border rounded-lg p-2 text-sm text-[#340803] focus:outline-[#C1121F]"
+          ></textarea>
+          <div class="flex gap-2 justify-end">
+            <button
+              (click)="saveCreate()"
+              [disabled]="!newText.section || !newText.content"
+              class="bg-[#C1121F] text-white px-3 py-1 rounded-lg hover:bg-[#9b0d16] disabled:opacity-50"
+            >
+              Crear
+            </button>
+            <button
+              (click)="cancelCreate()"
+              class="bg-gray-200 px-3 py-1 rounded-lg hover:bg-gray-300"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
+      </div>
   
-        <!-- Modo lectura -->
-        <p *ngIf="editingId !== t.id" class="text-sm text-[#310D09] mt-2">
-          {{ t.content }}
-        </p>
+      <!-- Lista de Textos -->
+      <div *ngIf="loading" class="text-center text-[#C1121F] font-medium">Cargando textos...</div>
   
-        <!-- Modo edición -->
-        <div *ngIf="editingId === t.id" class="flex flex-col gap-2 mt-2">
-          <textarea
-            [(ngModel)]="editedContent"
-            rows="3"
-            class="border rounded-lg p-2 text-sm text-[#340803] focus:outline-[#C1121F]"
-          ></textarea>
-          <div class="flex gap-2 justify-end">
-            <button
-              (click)="saveText(t)"
-              class="bg-[#C1121F] text-white px-3 py-1 rounded-lg hover:bg-[#9b0d16]"
-            >
-              Guardar
-            </button>
-            <button
-              (click)="cancelEdit()"
-              class="bg-gray-200 px-3 py-1 rounded-lg hover:bg-gray-300"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+      <div *ngIf="!loading && texts.length === 0" class="text-center text-gray-500">No hay textos configurados. ¡Crea el primero!</div>
   
+      <div class="flex flex-col gap-4">
+        <div
+          *ngFor="let t of texts"
+          class="text-card bg-[#FFB1B8]/20 p-4 rounded-xl shadow-md hover:shadow-lg transition"
+        >
+          <div class="flex justify-between items-start">
+            <h3 class="font-semibold text-[#340803]">{{ t.section }} (ID: {{t.id}})</h3>
+            <div class="flex gap-2">
+                <!-- Botón de Edición -->
+                <button
+                  *ngIf="editingId !== t.id && !isCreating"
+                  (click)="editText(t)"
+                  class="text-[#C1121F] hover:text-[#9b0d16] transition"
+                  title="Editar Texto"
+                >
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+  
+                <!-- Botón de Eliminación -->
+                <button
+                  (click)="removeText(t.id)"
+                  class="text-gray-500 hover:text-red-600 transition"
+                  title="Eliminar Texto"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+            </div>
+          </div>
+   
+          <!-- Modo lectura -->
+          <p *ngIf="editingId !== t.id" class="text-sm text-[#310D09] mt-2 whitespace-pre-wrap">
+            {{ t.content }}
+          </p>
+   
+          <!-- Modo edición -->
+          <div *ngIf="editingId === t.id" class="flex flex-col gap-2 mt-2">
+            <textarea
+              [(ngModel)]="editedContent"
+              rows="3"
+              class="border rounded-lg p-2 text-sm text-[#340803] focus:outline-[#C1121F]"
+            ></textarea>
+            <div class="flex gap-2 justify-end">
+              <button
+                (click)="saveText(t)"
+                class="bg-[#C1121F] text-white px-3 py-1 rounded-lg hover:bg-[#9b0d16]"
+              >
+                Guardar
+              </button>
+              <button
+                (click)="cancelEdit()"
+                class="bg-gray-200 px-3 py-1 rounded-lg hover:bg-gray-300"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, inject, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router'; // Importamos Router
+import { Router } from '@angular/router';
 import { NavbarItemComponent } from './navbar-item';
 import { ButtonComponent } from '../button/button';
-import { AuthService } from '../../services/auth'; // Aseguramos la ruta correcta del servicio
+import { AuthService } from '../../services/auth';
 import { Subscription } from 'rxjs';
+import gsap from 'gsap';
 
-// Interfaz local para garantizar la seguridad de tipos, asumiendo que es la misma que en AuthService
 interface User {
   id: number;
   email: string;
@@ -17,83 +17,88 @@ interface User {
 
 @Component({
   selector: 'app-navbar',
-  standalone: true, 
-  imports: [NavbarItemComponent, ButtonComponent, CommonModule], 
+  standalone: true,
+  imports: [NavbarItemComponent, ButtonComponent, CommonModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
-// La clase debe ser exportada como NavbarComponent para seguir la convención.
-export class Navbar implements OnInit, OnDestroy { 
-  
-  // Propiedades expuestas al template
+export class Navbar implements OnInit, OnDestroy {
+
   user: User | null;
-  isLoggedIn: boolean = false;
+  userName: string = '';
   userAvatarUrl: string = '';
-  userName: string = ''; 
+  isLoggedIn = false;
+
+  menuOpen = false;
+
+  @ViewChild('dropdownMenu') dropdownMenu!: ElementRef;
+
+  private authService = inject(AuthService);
+  private router = inject(Router);
   private authSubscription: Subscription = new Subscription();
 
-  // Inyección de servicios usando inject
-  private authService = inject(AuthService);
-  private router = inject(Router); // Inyectamos Router
-
   constructor() {
-    // CAMBIO CLAVE: Inicializamos todas las propiedades inmediatamente desde el estado actual del servicio (signal).
     const currentUser = this.authService.user();
-    
     this.user = currentUser;
     this.isLoggedIn = !!currentUser;
-    
+
     if (currentUser) {
-        // Usamos el getter del servicio
-        this.userAvatarUrl = this.authService.userAvatarUrl;
-        // Obtenemos el nombre para mostrarlo
-        this.userName = currentUser.name; 
+      this.userAvatarUrl = this.authService.userAvatarUrl;
+      this.userName = currentUser.name;
     }
-    // NOTA: La suscripción en ngOnInit aún es necesaria para manejar cambios reactivos (login/logout).
-  } 
+  }
 
   ngOnInit(): void {
-    // Nos suscribimos a los cambios de autenticación
-    this.authSubscription = this.authService.authChanged$.subscribe(
-      (isLoggedInStatus: boolean) => {
-        this.isLoggedIn = isLoggedInStatus;
-        
-        const currentUser = this.authService.user();
-        this.user = currentUser;
+    this.authSubscription = this.authService.authChanged$.subscribe(status => {
+      this.isLoggedIn = status;
 
-        if (isLoggedInStatus && currentUser) {
-            // Esto se asegura de que la UI reaccione a los cambios (login/logout)
-            this.userAvatarUrl = this.authService.userAvatarUrl;
-            this.userName = currentUser.name; 
-        } else {
-            this.userAvatarUrl = '';
-            this.userName = '';
-        }
+      const currentUser = this.authService.user();
+      this.user = currentUser;
+
+      if (status && currentUser) {
+        this.userAvatarUrl = this.authService.userAvatarUrl;
+        this.userName = currentUser.name;
       }
-    );
+    });
   }
+
+  ngAfterViewInit() {}
 
   ngOnDestroy(): void {
     this.authSubscription.unsubscribe();
   }
 
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+
+    setTimeout(() => {
+      if (this.dropdownMenu) {
+        gsap.fromTo(
+          this.dropdownMenu.nativeElement,
+          { opacity: 0, y: -10, scale: 0.9 },
+          { opacity: 1, y: 0, scale: 1, duration: 0.25, ease: 'power2.out' }
+        );
+      }
+    });
+  }
+
+  goToProfile() {
+    this.menuOpen = false;
+    this.router.navigate(['/profile']);
+  }
+
+  goToAdmin() {
+    this.menuOpen = false;
+    this.router.navigate(['/admin']);
+  }
+
+  logout() {
+    this.menuOpen = false;
+    this.authService.logout();
+    this.router.navigate(['/']);
+  }
+
   onLoginClick() {
     this.router.navigate(['/login']);
-  }
-  
-  /**
-   * Navega a /admin o /profile dependiendo del rol del usuario.
-   */
-  onAvatarClick(): void {
-    const userRole = this.user?.role;
-    
-    if (userRole === 'admin') {
-      this.router.navigate(['/admin']);
-    } else if (userRole === 'user') {
-      this.router.navigate(['/profile']);
-    } else {
-      // Navegación por defecto para usuarios logeados sin un rol explícito
-      this.router.navigate(['/profile']); 
-    }
   }
 }
