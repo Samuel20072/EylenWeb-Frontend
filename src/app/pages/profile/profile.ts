@@ -8,12 +8,12 @@ import {
 import gsap from 'gsap';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UpcomingCalendarComponent } from '../../components/admin/upcoming-calendar-component/upcoming-calendar-component';
+import { ScheduleClassComponent } from '../../components/profile/schedule-class-component/schedule-class-component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [UpcomingCalendarComponent, CommonModule, FormsModule],
+  imports: [ScheduleClassComponent, CommonModule, FormsModule],
   templateUrl: './profile.html',
 })
 export class ProfileComponent implements OnInit, AfterViewInit {
@@ -52,11 +52,13 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
   enableEdit() {
     this.isEditing = true;
-    gsap.fromTo(
-      '.edit-section',
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
-    );
+    setTimeout(() => {
+      gsap.fromTo(
+        '.edit-section',
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+      );
+    }, 0);
   }
 
   cancelEdit() {

@@ -1,10 +1,8 @@
 <div class="min-h-screen bg-gradient-to-b  flex flex-col items-center py-14 px-4">
 
   <!-- Card del usuario -->
-  <div
-    #profileCard
-    class="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-3xl border border-gray-100 backdrop-blur-xl transition transform hover:scale-[1.01] hover:shadow-3xl duration-300"
-  >
+  <div #profileCard
+    class="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-3xl border border-gray-100 backdrop-blur-xl transition transform hover:scale-[1.01] hover:shadow-3xl duration-300">
 
     <h2 class="text-4xl font-extrabold text-gray-800 mb-8 text-center tracking-tight">
       👤 Mi Perfil
@@ -20,12 +18,8 @@
           {{ user?.full_name }}
         </div>
 
-        <input
-          *ngIf="isEditing"
-          type="text"
-          [(ngModel)]="editedName"
-          class="edit-section mt-1 w-full border rounded-xl px-4 py-2 shadow-sm focus:ring-2 focus:ring-blue-500"
-        />
+        <input *ngIf="isEditing" type="text" [(ngModel)]="editedName"
+          class="edit-section mt-1 w-full border rounded-xl px-4 py-2 shadow-sm focus:ring-2 focus:ring-blue-500" />
       </div>
 
       <!-- Correo -->
@@ -36,25 +30,18 @@
           {{ user?.email }}
         </div>
 
-        <input
-          *ngIf="isEditing"
-          type="email"
-          [(ngModel)]="editedEmail"
-          class="edit-section mt-1 w-full border rounded-xl px-4 py-2 shadow-sm focus:ring-2 focus:ring-blue-500"
-        />
+        <input *ngIf="isEditing" type="email" [(ngModel)]="editedEmail"
+          class="edit-section mt-1 w-full border rounded-xl px-4 py-2 shadow-sm focus:ring-2 focus:ring-blue-500" />
       </div>
 
       <!-- Rol -->
       <div>
         <p class="text-sm text-gray-500">Rol del usuario</p>
 
-        <span
-          class="inline-block px-4 py-1.5 rounded-full text-white font-semibold shadow"
-          [ngClass]="{
+        <span class="inline-block px-4 py-1.5 rounded-full text-white font-semibold shadow" [ngClass]="{
             'bg-blue-600': user?.role === 1,
             'bg-green-600': user?.role === 2
-          }"
-        >
+          }">
           {{ user?.role === 1 ? 'Administrador' : 'Usuario' }}
         </span>
       </div>
@@ -62,26 +49,19 @@
 
     <!-- Botones -->
     <div class="mt-10 flex justify-center gap-4">
-      <button
-        *ngIf="!isEditing"
-        (click)="enableEdit()"
-        class="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-xl shadow-lg hover:bg-blue-700 transition-all"
-      >
+      <button *ngIf="!isEditing" (click)="enableEdit()"
+        class="px-6 py-2.5 bg-blue-600 text-white font-semibold rounded-xl shadow-lg hover:bg-blue-700 transition-all">
         ✏️ Editar Perfil
       </button>
 
       <div *ngIf="isEditing" class="flex gap-4">
-        <button
-          (click)="saveChanges()"
-          class="px-6 py-2.5 bg-green-600 text-white font-semibold rounded-xl shadow-lg hover:bg-green-700 transition-all"
-        >
+        <button (click)="saveChanges()"
+          class="px-6 py-2.5 bg-green-600 text-white font-semibold rounded-xl shadow-lg hover:bg-green-700 transition-all">
           💾 Guardar
         </button>
 
-        <button
-          (click)="cancelEdit()"
-          class="px-6 py-2.5 bg-gray-400 text-white font-semibold rounded-xl shadow-lg hover:bg-gray-500 transition-all"
-        >
+        <button (click)="cancelEdit()"
+          class="px-6 py-2.5 bg-gray-400 text-white font-semibold rounded-xl shadow-lg hover:bg-gray-500 transition-all">
           ❌ Cancelar
         </button>
       </div>
@@ -95,6 +75,6 @@
       📅 Próximas actividades
     </h3>
 
-    <app-upcoming-calendar></app-upcoming-calendar>
+    <app-schedule-class></app-schedule-class>
   </div>
 </div>

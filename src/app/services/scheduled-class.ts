@@ -1,109 +1,78 @@
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment.dev';
+
 /**
- * Interfaces de Tipado
- * Nota: Estas interfaces deben coincidir con tus DTOs y entidades reales del backend.
+ * 🛠️ Tipado para la Gestión de Clases Programadas
  */
 
-// Interfaz para la entidad completa (o la respuesta de la API)
-interface ScheduledClass {
+export enum ScheduledClassStatus {
+  PENDING = 'PENDING',
+  COMPLETED = 'COMPLETED',
+  CANCELED = 'CANCELED',
+}
+
+export interface ScheduledClass {
   id: number;
-  date: string; // ISO Date string
-  time: string;
-  // Añadir otras propiedades de tu ScheduledClass (e.g., coach, capacity, etc.)
-  [key: string]: any; 
+  user_id: number;
+  package_purchase_id: number;
+  schedule_date: string;
+  status: ScheduledClassStatus;
+  notes: string | null;
+
+  // Propiedades adicionales
+  date?: string;
+  time?: string;
+
+  // Propiedades de BaseEntity
+  createdAt: string;
+  updatedAt: string;
+
+  // Relaciones (si el backend las devuelve)
+  user?: {
+    id: number;
+    name: string;
+    email: string;
+  };
 }
 
-// DTO para la creación de una clase
-interface CreateScheduledClassDto {
-  date: string;
-  time: string;
-  // Añadir campos de creación
-  [key: string]: any;
+export interface CreateScheduledClassDto {
+  user_id: number;
+  package_purchase_id: number;
+  schedule_date: string;
+  notes?: string;
 }
 
-// DTO para la actualización de una clase
-// 'Partial' indica que todos los campos son opcionales
-type UpdateScheduledClassDto = Partial<CreateScheduledClassDto>;
+export type UpdateScheduledClassDto = Partial<CreateScheduledClassDto> & {
+  status?: ScheduledClassStatus;
+};
 
-
-/**
- * Servicio de Cliente (Frontend) para la gestión de Clases Programadas
- */
+@Injectable({
+  providedIn: 'root'
+})
 export class ScheduledClassesService {
-  // Asegúrate de reemplazar esta URL base con la dirección de tu API
-  private readonly baseUrl = 'http://localhost:3000/scheduled-classes'; 
-  
-  // Puedes pasar la URL base como argumento si es necesario para diferentes entornos
-  // constructor(private readonly baseUrl: string) {}
+  private readonly baseUrl = `${environment.apiUrl}/scheduled-classes`;
 
-  private async request<T>(
-    url: string,
-    method: string,
-    body?: any,
-  ): Promise<T> {
-    const headers: HeadersInit = {
-      'Content-Type': 'application/json',
-      // Agrega tu token de autenticación si es necesario
-      // 'Authorization': `Bearer ${localStorage.getItem('authToken')}`, 
-    };
+  constructor(private http: HttpClient) { }
 
-    const config: RequestInit = {
-      method,
-      headers,
-      body: body ? JSON.stringify(body) : undefined,
-    };
-
-    try {
-      const response = await fetch(url, config);
-
-      // Si la respuesta es 204 No Content (como en DELETE), retorna un objeto vacío
-      if (response.status === 204) {
-        return {} as T;
-      }
-      
-      // Manejar errores HTTP
-      if (!response.ok) {
-        // Intenta obtener el mensaje de error del cuerpo de la respuesta
-        const errorData = await response.json().catch(() => ({ message: response.statusText }));
-        throw new Error(errorData.message || 'Error en la solicitud de API');
-      }
-
-      // Parsea el cuerpo JSON
-      return response.json() as Promise<T>;
-
-    } catch (error) {
-      console.error('API Request Error:', error);
-      throw error;
-    }
+  create(dto: CreateScheduledClassDto): Observable<ScheduledClass> {
+    return this.http.post<ScheduledClass>(this.baseUrl, dto);
   }
 
-  // POST /scheduled-classes
-  async create(dto: CreateScheduledClassDto): Promise<ScheduledClass> {
-    const url = this.baseUrl;
-    return this.request<ScheduledClass>(url, 'POST', dto);
+  findAll(): Observable<ScheduledClass[]> {
+    return this.http.get<ScheduledClass[]>(this.baseUrl);
   }
 
-  // GET /scheduled-classes
-  async findAll(): Promise<ScheduledClass[]> {
-    const url = this.baseUrl;
-    return this.request<ScheduledClass[]>(url, 'GET');
+  findOne(id: number): Observable<ScheduledClass> {
+    return this.http.get<ScheduledClass>(`${this.baseUrl}/${id}`);
   }
 
-  // GET /scheduled-classes/:id
-  async findOne(id: number): Promise<ScheduledClass> {
-    const url = `${this.baseUrl}/${id}`;
-    return this.request<ScheduledClass>(url, 'GET');
+  update(id: number, dto: UpdateScheduledClassDto): Observable<ScheduledClass> {
+    return this.http.patch<ScheduledClass>(`${this.baseUrl}/${id}`, dto);
   }
 
-  // PATCH /scheduled-classes/:id
-  async update(id: number, dto: UpdateScheduledClassDto): Promise<ScheduledClass> {
-    const url = `${this.baseUrl}/${id}`;
-    return this.request<ScheduledClass>(url, 'PATCH', dto);
-  }
-
-  // DELETE /scheduled-classes/:id
-  async remove(id: number): Promise<void> {
-    const url = `${this.baseUrl}/${id}`;
-    // El método request devolverá un Promise<void> para 204 No Content
-    return this.request<void>(url, 'DELETE');
+  remove(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
 }

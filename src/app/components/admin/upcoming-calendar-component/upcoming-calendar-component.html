@@ -1,7 +1,5 @@
-<div
-  #card
-  class="bg-white rounded-2xl p-8 shadow-lg w-full min-h-[420px] flex flex-col transition-all duration-300"
->
+<div #card
+  class="bg-white rounded-2xl p-8 shadow-lg w-full min-h-[420px] flex flex-col transition-all duration-300 relative">
   <!-- 🔹 Encabezado -->
   <div class="flex flex-col sm:flex-row items-center justify-between mb-6">
     <h3 class="text-xl font-semibold text-[#340803] text-center sm:text-left">
@@ -9,19 +7,15 @@
     </h3>
 
     <div class="flex items-center gap-3">
-      <button
-        (click)="prevMonth()"
-        class="w-9 h-9 flex items-center justify-center rounded-full text-sm transition duration-200 bg-[#C1121F] text-white hover:bg-[#9b0f18]"
-      >
+      <button (click)="prevMonth()"
+        class="w-9 h-9 flex items-center justify-center rounded-full text-sm transition duration-200 bg-[#C1121F] text-white hover:bg-[#9b0f18]">
         <i class="fa-solid fa-chevron-left"></i>
       </button>
-      <span class="text-base text-[#310D09] font-semibold min-w-[150px] text-center">
-        {{ month }}
+      <span class="text-base text-[#310D09] font-semibold min-w-[150px] text-center capitalize">
+        {{ monthLabel }}
       </span>
-      <button
-        (click)="nextMonth()"
-        class="w-9 h-9 flex items-center justify-center rounded-full text-sm transition duration-200 bg-[#C1121F] text-white hover:bg-[#9b0f18]"
-      >
+      <button (click)="nextMonth()"
+        class="w-9 h-9 flex items-center justify-center rounded-full text-sm transition duration-200 bg-[#C1121F] text-white hover:bg-[#9b0f18]">
         <i class="fa-solid fa-chevron-right"></i>
       </button>
     </div>
@@ -30,9 +24,7 @@
   <!-- 🔹 Calendario -->
   <div class="flex flex-col flex-1 justify-center items-center">
     <!-- Días de la semana -->
-    <div
-      class="grid grid-cols-7 gap-4 w-full max-w-3xl text-center mb-3 text-sm text-[#310D09] font-semibold"
-    >
+    <div class="grid grid-cols-7 gap-4 w-full max-w-3xl text-center mb-3 text-sm text-[#310D09] font-semibold">
       <span>Dom</span>
       <span>Lun</span>
       <span>Mar</span>
@@ -43,22 +35,67 @@
     </div>
 
     <!-- Días del mes -->
-    <div
-      class="grid grid-cols-7 gap-4 w-full max-w-3xl justify-items-center"
-    >
+    <div class="grid grid-cols-7 gap-4 w-full max-w-3xl justify-items-center">
+      <!-- Días vacíos -->
+      <ng-container *ngFor="let empty of emptyDays">
+        <div class="w-10 h-10 sm:w-12 sm:h-12"></div>
+      </ng-container>
+
+      <!-- Días con número -->
       <ng-container *ngFor="let d of days">
-        <button
-          (click)="selectDay(d)"
-          class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full text-sm sm:text-base font-medium transition-all duration-200"
-          [ngClass]="
-            d === selected
-              ? 'bg-[#C1121F] text-white shadow-md scale-110'
-              : 'bg-[#FFCCD1] text-[#C1121F] hover:bg-[#C1121F]/80 hover:text-white'
-          "
-        >
+        <button (click)="selectDay(d)"
+          class="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full text-sm sm:text-base font-medium transition-all duration-200 relative"
+          [ngClass]="{
+            'bg-[#C1121F] text-white shadow-md scale-110': d === selectedDay,
+            'bg-red-100 text-[#C1121F] font-bold border-2 border-[#C1121F]': hasClass(d) && d !== selectedDay,
+            'bg-[#FFCCD1] text-[#C1121F] hover:bg-[#C1121F]/80 hover:text-white': !hasClass(d) && d !== selectedDay
+          }">
           {{ d }}
+          <!-- Indicador de clase si no está seleccionado -->
+          <span *ngIf="hasClass(d) && d !== selectedDay"
+            class="absolute top-0 right-0 w-3 h-3 bg-red-600 rounded-full border-2 border-white"></span>
         </button>
       </ng-container>
+    </div>
+  </div>
+
+  <!-- 🔹 Modal de Detalles -->
+  <div *ngIf="isModalOpen" class="absolute inset-0 bg-black/50 flex items-center justify-center rounded-2xl z-10 p-4">
+    <div class="bg-white rounded-xl p-6 w-full max-w-sm shadow-2xl transform transition-all scale-100">
+      <div class="flex justify-between items-center mb-4">
+        <h4 class="text-lg font-bold text-[#340803]">Clases del día {{ selectedDay }}</h4>
+        <button (click)="closeModal()" class="text-gray-500 hover:text-red-600">
+          <i class="fa-solid fa-times text-xl"></i>
+        </button>
+      </div>
+
+      <div class="max-h-[300px] overflow-y-auto space-y-3">
+        <div *ngFor="let cls of classesOnSelectedDay" class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+          <p class="text-sm font-semibold text-[#C1121F] mb-1">
+            <i class="fa-regular fa-clock mr-1"></i> {{ formatTime(cls.schedule_date) }}
+          </p>
+          <p class="text-gray-800 font-medium">
+            <i class="fa-regular fa-user mr-1"></i> {{ cls.user?.name || 'Usuario Desconocido' }}
+          </p>
+          <p class="text-xs text-gray-500 mt-1">
+            {{ cls.user?.email }}
+          </p>
+          <div *ngIf="cls.notes" class="mt-2 text-xs text-gray-600 bg-yellow-50 p-2 rounded">
+            Note: {{ cls.notes }}
+          </div>
+          <div class="mt-2 text-xs font-bold uppercase tracking-wider" [ngClass]="{
+                 'text-green-600': cls.status === 'COMPLETED',
+                 'text-yellow-600': cls.status === 'PENDING',
+                 'text-red-600': cls.status === 'CANCELED'
+               }">
+            {{ cls.status }}
+          </div>
+        </div>
+
+        <div *ngIf="classesOnSelectedDay.length === 0" class="text-center text-gray-500 py-4">
+          No hay clases para este día.
+        </div>
+      </div>
     </div>
   </div>
 </div>
