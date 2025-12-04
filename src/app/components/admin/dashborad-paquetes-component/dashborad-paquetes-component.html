@@ -1,24 +1,26 @@
-<div class="min-h-screen  flex flex-col gap-8">
-  
-    <!-- 🔹 Contenedor principal -->
-    <main class="grid grid-cols-1 xl:grid-cols-3 gap-8">
-      <!-- 🧍‍♀️ Lista de usuarios (lado izquierdo) -->
-      <section class="xl:col-span-2  p-6">
-        <app-packages-list></app-packages-list>
-      </section>
-  
-      <!-- 🔹 Lado derecho: Crear usuario + Estadísticas -->
-      <div class="flex flex-col gap-6">
-        <!-- Crear usuario -->
-        <div class=" p-6">
-          <app-create-package></app-create-package>
-        </div>
-  
-        <!-- Estadísticas -->
-        <div class=" p-6 flex-1">
-          <app-top-packages></app-top-packages>
-        </div>
+<div class="min-h-screen flex flex-col gap-4 md:gap-8">
+
+  <main class="mx-auto w-full max-w-[1500px] grid grid-cols-1 xl:grid-cols-[2fr_1fr] gap-6">
+
+    <!-- LISTA DE PAQUETES -->
+    <section class="p-4 md:p-6">
+      <app-packages-list></app-packages-list>
+    </section>
+
+    <!-- COLUMNA DERECHA -->
+    <div class="flex flex-col gap-6">
+
+      <!-- Crear paquete -->
+      <div class="p-4 md:p-6">
+        <app-create-package></app-create-package>
       </div>
-    </main>
-  </div>
-  
+
+      <!-- Estadísticas -->
+      <div class="p-4 md:p-6">
+        <app-top-packages></app-top-packages>
+      </div>
+
+    </div>
+
+  </main>
+</div>

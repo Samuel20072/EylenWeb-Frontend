@@ -1,35 +1,76 @@
 <div class="relative">
-    <!-- Icono -->
-    <button
-      (click)="toggleNotifications()"
-      class="px-3 py-1 text-sm rounded-lg bg-white shadow-sm flex items-center gap-2 relative"
+  <!-- Botón de notificaciones -->
+  <button
+    (click)="toggleNotifications()"
+    class="px-4 py-2 text-sm font-medium rounded-xl bg-white shadow-md hover:shadow-lg transition-all duration-200 flex items-center gap-2 relative border border-gray-200"
+  >
+    <i class="fa-solid fa-bell text-[#C1121F] text-lg"></i>
+
+    <span
+      *ngIf="notifications.length > 0"
+      class="absolute -top-1 -right-1 bg-[#C1121F] text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full shadow-sm"
     >
-      <i class="fa-solid fa-bell text-[#C1121F]"></i>
-      <span *ngIf="notifications.length > 0" class="absolute -top-1 -right-1 bg-[#C1121F] text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full">
-        {{ notifications.length }}
-      </span>
-      <span>Notificaciones</span>
-    </button>
-  
-    <!-- Panel desplegable -->
+      {{ notifications.length }}
+    </span>
+
+    <span class="text-gray-700">Notificaciones</span>
+  </button>
+
+  <!-- Panel de notificaciones -->
+  <div
+    *ngIf="showPanel"
+    class="absolute right-0 mt-3 w-80 max-h-96 overflow-y-auto bg-white rounded-2xl shadow-xl border border-gray-100 p-4 z-50 animate-fadeIn"
+  >
+    <!-- Mensaje de error -->
     <div
-      *ngIf="showPanel"
-      class="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-lg border border-gray-100 p-3 z-50"
+      *ngIf="errorMessage"
+      class="text-sm text-red-600 text-center py-2 bg-red-50 border border-red-200 rounded-xl"
     >
-      <div *ngIf="notifications.length === 0" class="text-sm text-gray-500 text-center py-2">
-        No hay notificaciones nuevas
-      </div>
-  
-      <div
-        *ngFor="let n of notifications"
-        class="p-2 rounded-lg mb-2 bg-[#FFEBEB] text-[#340803] text-sm flex items-start gap-2"
-      >
-        <i class="fa-solid fa-circle-check text-[#C1121F] mt-1"></i>
-        <div>
-          <p><strong>{{ n.user }}</strong> ha realizado un pago.</p>
-          <p class="text-xs text-gray-500">{{ n.time }}</p>
+      {{ errorMessage }}
+    </div>
+
+    <!-- Sin notificaciones -->
+    <div
+      *ngIf="notifications.length === 0 && !errorMessage"
+      class="text-sm text-gray-500 text-center py-3"
+    >
+      No hay notificaciones nuevas
+    </div>
+
+    <!-- Lista de notificaciones -->
+    <div
+      *ngFor="let n of notifications"
+      class="p-3 rounded-xl mb-3 cursor-pointer transition-all duration-200 border shadow-sm hover:shadow-md"
+      [ngClass]="{
+        'bg-gray-50 border-gray-200 text-gray-700': n.is_read,
+        'bg-[#FFF4F5] border-[#C1121F]/40 text-[#3A0A0A] font-medium': !n.is_read
+      }"
+    >
+      <div class="flex items-start gap-3">
+        <!-- Icono según lectura -->
+        <i
+          *ngIf="!n.is_read"
+          class="fa-solid fa-circle-check text-[#C1121F] mt-1 text-base"
+        ></i>
+        <i
+          *ngIf="n.is_read"
+          class="fa-regular fa-bell text-gray-400 mt-1 text-base"
+        ></i>
+
+        <div class="flex-1">
+          <p class="text-sm leading-tight">
+            <strong>{{ n.title }}</strong>
+          </p>
+
+          <p *ngIf="n.message" class="text-xs text-gray-600 mt-1">
+            {{ n.message }}
+          </p>
+
+          <p class="text-xs text-gray-400 mt-1">
+            {{ formatTimeAgo(n.fecha_creacion) }}
+          </p>
         </div>
       </div>
     </div>
   </div>
-  
+</div>

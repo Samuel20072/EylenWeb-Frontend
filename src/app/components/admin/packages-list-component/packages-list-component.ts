@@ -56,7 +56,7 @@ export class PackagesListComponent implements OnInit, AfterViewInit {
         this.packages = enrichedData;
         this.filteredPackages = [...this.packages];
         this.isLoading = false;
-        
+        this.cdr.detectChanges();
         // Se elimina la lógica de animación inicial
       },
       error: (err) => {
@@ -68,6 +68,7 @@ export class PackagesListComponent implements OnInit, AfterViewInit {
             this.errorMessage = 'Error en la API. Inténtalo de nuevo más tarde.';
         }
         this.isLoading = false;
+
       }
     });
   }

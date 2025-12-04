@@ -4,6 +4,7 @@ import { StatsCardComponent } from '../stats-card-component/stats-card-component
 import { CreateUserComponent } from '../create-user-component/create-user-component';
 
 @Component({
+  standalone: true,
   selector: 'app-dashboard-usuarios-component',
   imports: [UsersListComponent,StatsCardComponent,CreateUserComponent],
   templateUrl: './dashboard-usuarios-component.html',

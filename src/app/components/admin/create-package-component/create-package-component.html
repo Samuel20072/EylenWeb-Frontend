@@ -1,61 +1,62 @@
-<div class="flex justify-center items-start py-10 px-40 sm:px-0">
-  <div
-    class="bg-white p-20 sm:p-10 rounded-3xl shadow-2xl border border-gray-100 w-full max-w-2xl mx-auto"
-  >
+<div class="flex justify-center items-start py-6 md:py-10 px-4 sm:px-6 md:px-40">
+  <div class="bg-white p-6 sm:p-8 md:p-10 lg:p-20 rounded-3xl shadow-2xl border border-gray-100 w-full max-w-2xl mx-auto">
+
     <!-- Título -->
-    <h2 class="text-3xl font-extrabold text-gray-900 mb-4 text-center">
+    <h2 class="text-2xl sm:text-3xl md:text-3xl font-extrabold text-gray-900 mb-3 sm:mb-4 text-center">
       🌟 Creador de Paquetes
     </h2>
 
-    <p class="text-center text-sm text-gray-500 mb-8">
+    <p class="text-center text-xs sm:text-sm md:text-sm text-gray-500 mb-6 sm:mb-8">
       Introduce los detalles para configurar un nuevo paquete de servicios.
     </p>
 
-    <form (ngSubmit)="onSubmit()" class="flex flex-col gap-6">
+    <form (ngSubmit)="onSubmit()" class="flex flex-col gap-4 sm:gap-5 md:gap-6">
 
       <!-- Mensaje -->
-      <div
-        *ngIf="message"
+      <div *ngIf="message"
         [ngClass]="{
           'bg-red-50 border-red-400 text-red-800': isError,
           'bg-green-50 border-green-400 text-green-800': !isError
         }"
-        class="p-4 rounded-xl border transition-all duration-300 font-medium"
-      >
+        class="p-3 sm:p-4 rounded-xl border transition-all duration-300 font-medium text-sm sm:text-base">
         {{ message }}
       </div>
 
       <!-- Nombre -->
       <div class="flex flex-col gap-1">
-        <label class="text-sm font-semibold text-gray-700">Nombre del Paquete <span class="text-[#C1121F]">*</span></label>
+        <label class="text-xs sm:text-sm font-semibold text-gray-700">
+          Nombre del Paquete <span class="text-[#C1121F]">*</span>
+        </label>
         <input
           type="text"
           [(ngModel)]="package.name"
           name="name"
           required
-          class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#C1121F]/30 transition duration-200"
+          class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-xl border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#C1121F]/30 transition duration-200"
           placeholder="Ej. Plan Pro Avanzado"
         />
       </div>
 
       <!-- Descripción -->
       <div class="flex flex-col gap-1">
-        <label class="text-sm font-semibold text-gray-700">Descripción (Detalles de los beneficios)</label>
+        <label class="text-xs sm:text-sm font-semibold text-gray-700">Descripción</label>
         <textarea
           [(ngModel)]="package.description"
           name="description"
-          rows="4"
-          class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#C1121F]/30 transition shadow-sm resize-none"
+          rows="3"
+          class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-xl border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#C1121F]/30 transition shadow-sm resize-none"
           placeholder="Describe el contenido del paquete de forma atractiva"
         ></textarea>
       </div>
 
-      <!-- Grid de Precio y Duración -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Grid Precio y Duración -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
 
         <!-- Precio -->
         <div class="flex flex-col gap-1">
-          <label class="text-sm font-semibold text-gray-700">💰 Precio (COP) <span class="text-[#C1121F]">*</span></label>
+          <label class="text-xs sm:text-sm font-semibold text-gray-700">
+            💰 Precio (COP) <span class="text-[#C1121F]">*</span>
+          </label>
           <input
             type="number"
             [(ngModel)]="package.price"
@@ -63,65 +64,70 @@
             required
             min="0"
             step="1000"
-            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#C1121F]/30 transition"
+            class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-xl border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#C1121F]/30 transition"
             placeholder="120000"
           />
         </div>
 
         <!-- Duración -->
         <div class="flex flex-col gap-1">
-          <label class="text-sm font-semibold text-gray-700">📅 Duración (Semanas) <span class="text-[#C1121F]">*</span></label>
+          <label class="text-xs sm:text-sm font-semibold text-gray-700">
+            📅 Duración (Semanas) <span class="text-[#C1121F]">*</span>
+          </label>
           <input
             type="number"
             [(ngModel)]="package.durationWeeks"
             name="durationWeeks"
             required
             min="1"
-            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#C1121F]/30 transition"
+            class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-xl border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#C1121F]/30 transition"
             placeholder="4"
           />
         </div>
       </div>
 
       <!-- Grid sesiones + imagen -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+
         <!-- Sesiones -->
         <div class="flex flex-col gap-1">
-          <label class="text-sm font-semibold text-gray-700">🏋️‍♂️ Sesiones Incluidas <span class="text-[#C1121F]">*</span></label>
+          <label class="text-xs sm:text-sm font-semibold text-gray-700">
+            🏋️‍♂️ Sesiones Incluidas <span class="text-[#C1121F]">*</span>
+          </label>
           <input
             type="number"
             [(ngModel)]="package.sessionsCount"
             name="sessionsCount"
             required
             min="1"
-            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#C1121F]/30 transition"
+            class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-xl border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#C1121F]/30 transition"
             placeholder="8"
           />
         </div>
 
         <!-- Imagen -->
         <div class="flex flex-col gap-1">
-          <label class="text-sm font-semibold text-gray-700">🖼️ URL de Imagen (Opcional)</label>
+          <label class="text-xs sm:text-sm font-semibold text-gray-700">🖼️ URL de Imagen</label>
           <input
             type="url"
             [(ngModel)]="package.imageUrl"
             name="imageUrl"
-            class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#C1121F]/30 transition"
+            class="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base rounded-xl border border-gray-300 focus:outline-none focus:ring-4 focus:ring-[#C1121F]/30 transition"
             placeholder="https://ejemplo.com/paquete.png"
           />
         </div>
       </div>
 
       <!-- Checkbox -->
-      <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-200">
-        <input 
-          id="isActive" 
-          type="checkbox" 
-          [(ngModel)]="package.isActive" 
-          name="isActive" 
-          class="h-5 w-5 text-[#C1121F] rounded focus:ring-[#C1121F]"
-        >
-        <label for="isActive" class="text-base font-semibold text-gray-800">
+      <div class="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-gray-50 rounded-xl border border-gray-200">
+        <input
+          id="isActive"
+          type="checkbox"
+          [(ngModel)]="package.isActive"
+          name="isActive"
+          class="h-4 w-4 sm:h-5 sm:w-5 text-[#C1121F] rounded focus:ring-[#C1121F]"
+        />
+        <label for="isActive" class="text-sm sm:text-base font-semibold text-gray-800">
           Paquete Activo (Disponible para compra)
         </label>
       </div>
@@ -130,21 +136,25 @@
       <button
         type="submit"
         [disabled]="isLoading"
-        class="bg-[#C1121F] text-white py-3 mt-4 rounded-xl text-lg font-bold hover:bg-[#A10F1A] transition-all duration-300 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+        class="bg-[#C1121F] text-white py-2.5 sm:py-3 mt-2 sm:mt-4 rounded-xl text-base sm:text-lg font-bold hover:bg-[#A10F1A] transition-all duration-300 shadow-xl hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
       >
         <svg
           *ngIf="isLoading"
-          class="animate-spin -ml-1 mr-3 h-6 w-6 text-white"
+          class="animate-spin -ml-1 mr-3 h-5 w-5 sm:h-6 sm:w-6 text-white"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
         >
           <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor"
+          <path
+            class="opacity-75"
+            fill="currentColor"
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 
-            5.291A7.962 7.962 0 014 12H0c0 3.042 
-            1.135 5.824 3 7.938l3-2.647z"></path>
+              5.291A7.962 7.962 0 014 12H0c0 3.042 
+              1.135 5.824 3 7.938l3-2.647z"
+          ></path>
         </svg>
+
         {{ isLoading ? 'Creando...' : 'Crear Paquete' }}
       </button>
 

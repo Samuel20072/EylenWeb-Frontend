@@ -1,13 +1,13 @@
 <section
-  class="flex flex-col md:flex-row justify-center items-center bg-[#f9dada] px-10 py-16 max-w-7xl ml-auto mr-6 text-center overflow-hidden"
+  class="flex flex-col md:flex-row justify-center items-center bg-[#f9dada] px-6 md:px-10 py-12 md:py-16 max-w-7xl ml-auto mr-auto md:mr-6 text-center overflow-hidden"
 >
   <!-- Texto -->
   <div
-    class="md:w-1/2 space-y-4 text-center md:text-left"
+    class="w-full md:w-1/2 space-y-4 text-center md:text-left mb-8 md:mb-0"
     gsap-fade
   >
     <h2
-      class="text-5xl md:text-6xl font-playfair text-[#D4AF37] leading-tight font-extrabold drop-shadow-md"
+      class="text-3xl md:text-6xl font-playfair text-[#D4AF37] leading-tight font-extrabold drop-shadow-md"
       gsap-zoom
     >
       Descubre el poder <br />
@@ -16,7 +16,7 @@
 
     <div class="max-w-lg mx-auto md:mx-0" gsap-slide-up>
       <p
-        class="text-[#310D09] font-poppins font-medium text-lg leading-relaxed"
+        class="text-[#310D09] font-poppins font-medium text-base md:text-lg leading-relaxed"
       >
         El baile consciente es un espacio para liberar tensiones, reconectar
         con tu esencia femenina y encontrar soluciones a través del movimiento
@@ -54,30 +54,28 @@
   </div>
 
   <!-- Imagen -->
-  <!-- Imagen -->
-<div
-class="mt-8 md:mt-0 md:w-1/2 flex justify-center relative"
-gsap-parallax
->
-<img
-  *ngIf="heroImageUrl; else defaultImage"
-  [src]="heroImageUrl"
-  alt="Hero dinámico"
-  class="h-[480px] md:h-[530px] rounded-2xl object-cover transform transition-transform duration-700"
-/>
+  <div
+    class="w-full md:w-1/2 flex justify-center relative px-4 md:px-0"
+    gsap-parallax
+  >
+    <img
+      *ngIf="heroImageUrl; else defaultImage"
+      [src]="heroImageUrl"
+      alt="Hero dinámico"
+      class="w-full h-auto aspect-[4/5] md:h-[530px] md:w-auto rounded-2xl object-cover transform transition-transform duration-700"
+    />
 
-<!-- Imagen por defecto si no existe en BD -->
-<ng-template #defaultImage>
-  <img
-    src="../../../assets/images/hero1.png"
-    alt="Eylen bailando"
-    class="h-[480px] md:h-[530px] rounded-2xl object-cover transform transition-transform duration-700"
-  />
-</ng-template>
+    <!-- Imagen por defecto si no existe en BD -->
+    <ng-template #defaultImage>
+      <img
+        src="../../../assets/images/hero1.png"
+        alt="Eylen bailando"
+        class="w-full h-auto aspect-[4/5] md:h-[530px] md:w-auto rounded-2xl object-cover transform transition-transform duration-700"
+      />
+    </ng-template>
 
-<div
-  class="absolute inset-0 bg-gradient-to-tr from-[#C1121F]/5 to-transparent rounded-2xl"
-></div>
-</div>
-
+    <div
+      class="absolute inset-0 bg-gradient-to-tr from-[#C1121F]/5 to-transparent rounded-2xl"
+    ></div>
+  </div>
 </section>

@@ -80,14 +80,10 @@
 
       <!-- Monto -->
       <div class="bg-gray-100 border border-gray-300 rounded-xl p-3">
-        <label class="text-xs font-medium text-gray-500 block mb-1">Monto a Pagar</label>
-        <input
-          type="text"
-          readonly
-          class="w-full bg-transparent text-gray-900 font-bold font-mono text-base p-0 border-none focus:ring-0"
-          [value]="formData.amount"
-          [disabled]="isLoading"
-        />
+        <label class="text-xs font-medium block mb-1">Monto a Pagar</label>
+        <p class="font-semibold text-gray-900 text-sm leading-tight">
+          {{ selectedPackage?.price || 'N/A' }}
+        </p>
       </div>
 
       <!-- Archivo -->
@@ -113,7 +109,7 @@
         [disabled]="isLoading"
       ></textarea>
 
-      <!-- Estado -->
+      <!-- Estado (Mantenemos esta sección por si ocurre un error de validación local antes de la API) -->
       <div
         *ngIf="message"
         class="p-3 rounded-lg text-sm font-medium transition"
@@ -164,3 +160,24 @@
   (close)="closeConfirmation()"
 ></app-confirmation-modal>
 
+<!-- ========================================= -->
+<!-- Modal de Estado para Éxito (AÑADIDO) -->
+<!-- ========================================= -->
+<app-status-modal
+  [isOpen]="isSuccessModalOpen"
+  [title]="successModalTitle"
+  [message]="successModalMessage"
+  status="success"
+  (close)="closeSuccessModal()"
+></app-status-modal>
+
+<!-- ========================================= -->
+<!-- Modal de Estado para Error (AÑADIDO) -->
+<!-- ========================================= -->
+<app-status-modal
+  [isOpen]="isErrorModalOpen"
+  [title]="errorModalTitle"
+  [message]="errorModalMessage"
+  status="error"
+  (close)="closeErrorModal()"
+></app-status-modal>

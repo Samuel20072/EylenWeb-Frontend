@@ -1,28 +1,15 @@
-<section class="py-16 text-center flex flex-col items-center bg-[#fdeaea]">
-  <h2 class="text-3xl md:text-4xl font-bold text-[#340803] mb-12 font-playfair">
+<section class="py-12 md:py-16 text-center flex flex-col items-center bg-[#fdeaea] px-4">
+  <h2 class="text-3xl md:text-4xl font-bold text-[#340803] mb-8 md:mb-12 font-playfair">
     ¡Quiero comenzar hoy!
   </h2>
 
-  <div class="flex flex-wrap justify-center gap-12">
-      <ng-container *ngIf="packs$ | async as packs">
-          <app-paquetes-cards
-              *ngFor="let pack of packs"
-              
-              [pack]="pack"
-              
-              [diamonds]="calculateDiamonds(pack.sessionsCount)"
-              [backgroundColor]="getBackgroundColor(pack.price)"
-              
-              [buttonColor]="'#fff'" 
-              [buttonTextColor]="'#B5121B'" 
-              
-              (selectPack)="openModal(pack)"
-          ></app-paquetes-cards>
-      </ng-container>
+  <div class="flex flex-wrap justify-center gap-8 md:gap-12 w-full max-w-7xl">
+    <ng-container *ngIf="packs$ | async as packs">
+      <app-paquetes-cards *ngFor="let pack of packs" [pack]="pack" [diamonds]="calculateDiamonds(pack.sessionsCount)"
+        [backgroundColor]="getBackgroundColor(pack.price)" [buttonColor]="'#fff'" [buttonTextColor]="'#B5121B'"
+        (selectPack)="openModal(pack)" class="w-full sm:w-auto"></app-paquetes-cards>
+    </ng-container>
   </div>
-    <app-form-modal
-      [isOpen]="isModalOpen"
-      [selectedPackage]="selectedPackage"
-      (close)="closeModal()"
-    ></app-form-modal>
+    <app-form-modal     [isOpen]="isModalOpen"     [selectedPackage]="selectedPackage"     (close)="closeModal()"
+     ></app-form-modal>
 </section>

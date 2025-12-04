@@ -1,63 +1,125 @@
-<nav class="flex justify-between items-center py-4 px-8 bg-[#f9dada]  relative">
-  <h1 class="text-3xl font-normal text-[#340803] font-serif tracking-wider">Eylen</h1>
+<nav class="flex justify-between items-center py-4 px-4 md:px-8 bg-[#f9dada] relative">
+  <h1 class="text-2xl md:text-3xl font-normal text-[#340803] font-serif tracking-wider">Eylen</h1>
 
-  <ul class="flex gap-8 text-[#340803] font-semibold text-lg">
+  <!-- Desktop Navigation -->
+  <ul class="hidden md:flex gap-8 text-[#340803] font-semibold text-lg">
     <app-navbar-item name="INICIO" link="/"></app-navbar-item>
     <app-navbar-item name="CLASES" link="/clases"></app-navbar-item>
     <app-navbar-item name="SOBRE MÍ" link="/sobre-mi"></app-navbar-item>
     <app-navbar-item name="CONTACTO" link="/contacto"></app-navbar-item>
   </ul>
 
-  <!-- Botón iniciar sesión -->
-  @if (!isLoggedIn) {
-    <app-button 
-      text="Iniciar sesión" 
-      color="#C1121F" 
-      hoverColor="#a32f2f"
-      type="link"
-      link="/login"
+  <!-- Desktop Login/User Section -->
+  <div class="hidden md:block">
+    @if (!isLoggedIn) {
+    <app-button text="Iniciar sesión" color="#C1121F" hoverColor="#a32f2f" type="link" link="/login"
       (onClick)="onLoginClick()">
     </app-button>
-  }
+    }
 
-  <!-- Usuario logueado -->
-  @if (isLoggedIn) {
+    @if (isLoggedIn) {
     <div class="relative">
       <!-- Avatar -->
-      <div 
+      <div
         class="w-10 h-10 rounded-full overflow-hidden cursor-pointer transition transform hover:scale-105 shadow-md border-2 border-[#C1121F] hover:border-red-700"
         (click)="toggleMenu()">
         <img [src]="userAvatarUrl" alt="Avatar del usuario" class="w-full h-full object-cover">
       </div>
 
       <!-- MENÚ DESPLEGABLE -->
-      <div 
-        #dropdownMenu
-        *ngIf="menuOpen"
-        class="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-3 opacity-0 pointer-events-auto z-50 origin-top-right"
-      >
+      <div #dropdownMenu *ngIf="menuOpen"
+        class="absolute right-0 mt-3 w-48 bg-white rounded-xl shadow-xl border border-gray-200 py-3 opacity-0 pointer-events-auto z-50 origin-top-right">
         <p class="px-4 py-2 text-sm text-gray-600 border-b">Hola, {{ userName }}</p>
 
-        <button 
-          class="w-full text-left px-4 py-2 hover:bg-gray-100 transition"
-          (click)="goToProfile()">
+        <button class="w-full text-left px-4 py-2 hover:bg-gray-100 transition" (click)="goToProfile()">
           Perfil
         </button>
 
         @if (user?.role === 'admin') {
-          <button 
-            class="w-full text-left px-4 py-2 hover:bg-gray-100 transition"
-            (click)="goToAdmin()">
-            Panel Admin
-          </button>
+        <button class="w-full text-left px-4 py-2 hover:bg-gray-100 transition" (click)="goToAdmin()">
+          Panel Admin
+        </button>
         }
 
-        <button 
-          class="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600 font-semibold transition"
+        <button class="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600 font-semibold transition"
           (click)="logout()">
           Cerrar sesión
         </button>
       </div>
     </div>
-  }
+    }
+  </div>
+
+  <!-- Mobile Hamburger Button -->
+  <button class="md:hidden flex flex-col gap-1.5 w-8 h-8 justify-center items-center z-50" (click)="toggleMobileMenu()"
+    aria-label="Toggle menu">
+    <span class="w-6 h-0.5 bg-[#340803] transition-all duration-300"
+      [ngClass]="{'rotate-45 translate-y-2': mobileMenuOpen, 'rotate-0': !mobileMenuOpen}">
+    </span>
+    <span class="w-6 h-0.5 bg-[#340803] transition-all duration-300"
+      [ngClass]="{'opacity-0': mobileMenuOpen, 'opacity-100': !mobileMenuOpen}">
+    </span>
+    <span class="w-6 h-0.5 bg-[#340803] transition-all duration-300"
+      [ngClass]="{'-rotate-45 -translate-y-2': mobileMenuOpen, 'rotate-0': !mobileMenuOpen}">
+    </span>
+  </button>
+
+  <!-- Mobile Menu -->
+  <div #mobileMenu *ngIf="mobileMenuOpen"
+    class="fixed top-0 right-0 w-64 h-full bg-[#f9dada] shadow-2xl z-40 md:hidden overflow-y-auto">
+    <div class="flex flex-col pt-20 px-6 gap-6">
+      <!-- Mobile Navigation Links -->
+      <a routerLink="/" class="text-[#340803] font-semibold text-lg py-2 border-b border-[#340803]/20"
+        (click)="closeMobileMenu()">
+        INICIO
+      </a>
+      <a routerLink="/clases" class="text-[#340803] font-semibold text-lg py-2 border-b border-[#340803]/20"
+        (click)="closeMobileMenu()">
+        CLASES
+      </a>
+      <a routerLink="/sobre-mi" class="text-[#340803] font-semibold text-lg py-2 border-b border-[#340803]/20"
+        (click)="closeMobileMenu()">
+        SOBRE MÍ
+      </a>
+      <a routerLink="/contacto" class="text-[#340803] font-semibold text-lg py-2 border-b border-[#340803]/20"
+        (click)="closeMobileMenu()">
+        CONTACTO
+      </a>
+
+      <!-- Mobile Login/User Section -->
+      @if (!isLoggedIn) {
+      <button class="mt-4 bg-[#C1121F] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#a32f2f] transition"
+        (click)="onLoginClick(); closeMobileMenu()">
+        Iniciar sesión
+      </button>
+      }
+
+      @if (isLoggedIn) {
+      <div class="mt-4 flex flex-col gap-3">
+        <div class="flex items-center gap-3 pb-3 border-b border-[#340803]/20">
+          <img [src]="userAvatarUrl" alt="Avatar" class="w-10 h-10 rounded-full object-cover border-2 border-[#C1121F]">
+          <span class="text-[#340803] font-semibold">{{ userName }}</span>
+        </div>
+
+        <button class="text-left text-[#340803] font-medium py-2" (click)="goToProfile(); closeMobileMenu()">
+          Perfil
+        </button>
+
+        @if (user?.role === 'admin') {
+        <button class="text-left text-[#340803] font-medium py-2" (click)="goToAdmin(); closeMobileMenu()">
+          Panel Admin
+        </button>
+        }
+
+        <button class="text-left text-red-600 font-semibold py-2" (click)="logout(); closeMobileMenu()">
+          Cerrar sesión
+        </button>
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Mobile Menu Overlay -->
+  <div *ngIf="mobileMenuOpen" class="fixed inset-0 bg-black/50 z-30 md:hidden" (click)="closeMobileMenu()">
+  </div>
 </nav>

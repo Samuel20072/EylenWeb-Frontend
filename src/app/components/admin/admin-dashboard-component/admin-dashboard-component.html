@@ -1,29 +1,29 @@
-<main class="flex-1 grid grid-cols-12 gap-6">
+<main class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6">
   <!-- Gráfico y calendario -->
-  <div class="col-span-12 rounded-2xl">
-    <div class="grid grid-cols-12 gap-8">
+  <div class="col-span-1 lg:col-span-12 rounded-2xl">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-8">
       <!-- Gráfico (más ancho) -->
-      <div class="col-span-8">
+      <div class="col-span-1 lg:col-span-8">
         <app-sales-donut></app-sales-donut>
       </div>
 
       <!-- Calendario (más pequeño) -->
-      <div class="col-span-4">
+      <div class="col-span-1 lg:col-span-4">
         <app-upcoming-calendar></app-upcoming-calendar>
       </div>
     </div>
   </div>
 
   <!-- Fila inferior (paquetes, stats y usuarios) -->
-  <div class="col-span-12 grid grid-cols-12 gap-6 mt-6">
+  <div class="col-span-1 lg:col-span-12 grid grid-cols-1 lg:grid-cols-12 gap-4 md:gap-6 mt-0 lg:mt-6">
     <!-- Columna izquierda: Paquetes y Estadísticas -->
-    <div class="flex flex-col gap-4 col-span-4">
+    <div class="flex flex-col gap-4 col-span-1 lg:col-span-4">
       <app-top-packages></app-top-packages>
       <app-stats-card></app-stats-card>
     </div>
 
     <!-- Columna derecha: Usuarios -->
-    <div class="col-span-8">
+    <div class="col-span-1 lg:col-span-8">
       <app-users-list></app-users-list>
     </div>
   </div>
