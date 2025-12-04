@@ -1,9 +1,5 @@
-<section
-  class="bg-[#f8bfc2] py-20 min-h-[300px] flex flex-col items-center justify-center text-center"
->
-  <h2
-    class="text-3xl md:text-4xl font-bold font-playfair text-[#310D09] mb-6 leading-snug"
-  >
+<section class="bg-[#f8bfc2] py-20 min-h-[300px] flex flex-col items-center justify-center text-center">
+  <h2 class="text-3xl md:text-4xl font-bold font-playfair text-[#310D09] mb-6 leading-snug">
     Da el primer paso hacia tu conexión interior.
   </h2>
 
@@ -11,10 +7,6 @@
     Estas a un click de descubrir una nueva forma de moverte y sentirte.
   </p>
 
-  <app-button
-    text="Agendar mi clase"
-    color="#C1121F"
-    hoverColor="#a32f2f"
-    type="button"
-  ></app-button>
+  <app-button text="Agendar mi clase" color="#C1121F" hoverColor="#a32f2f" type="button"
+    (onClick)="handleAgendarClick()"></app-button>
 </section>

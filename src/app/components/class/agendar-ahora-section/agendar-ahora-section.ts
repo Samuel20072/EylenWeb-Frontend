@@ -1,17 +1,27 @@
 import { Component, AfterViewInit, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { CommonModule } from '@angular/common';
-import {ButtonComponent} from '../../button/button'
+import { ButtonComponent } from '../../button/button'
 
 gsap.registerPlugin(ScrollTrigger);
 @Component({
   selector: 'app-agendar-ahora-section',
-  imports: [ButtonComponent,CommonModule],
+  imports: [ButtonComponent, CommonModule],
   templateUrl: './agendar-ahora-section.html',
 })
-export class AgendarAhoraSection implements AfterViewInit{
-  constructor(private el: ElementRef) {}
+export class AgendarAhoraSection implements AfterViewInit {
+  constructor(private el: ElementRef, private auth: AuthService, private router: Router) { }
+
+  handleAgendarClick() {
+    if (this.auth.isAuthenticated()) {
+      this.router.navigate(['/profile']);
+    } else {
+      this.router.navigate(['/'], { fragment: 'paquetes' });
+    }
+  }
 
   ngAfterViewInit() {
     const section = this.el.nativeElement.querySelector('section');

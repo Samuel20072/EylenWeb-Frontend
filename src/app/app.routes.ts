@@ -6,7 +6,7 @@ import { Contacto } from './pages/contacto/contacto';
 import { Register } from './pages/register/register';
 import { Login } from './pages/login/login';
 import { Admin } from './pages/admin/admin';
-import {ProfileComponent} from '../app/pages/profile/profile'
+import { ProfileComponent } from '../app/pages/profile/profile'
 import { AdminDashboardComponent } from './components/admin/admin-dashboard-component/admin-dashboard-component';
 import { DashboardUsuariosComponent } from './components/admin/dashboard-usuarios-component/dashboard-usuarios-component';
 import { StatsCardComponent } from './components/admin/stats-card-component/stats-card-component';
@@ -18,6 +18,7 @@ import { UserDetailComponent } from './components/admin/user-detail-component/us
 // 🛡️ IMPORTA LOS GUARDS
 import { AuthGuard } from './services/auth.guard';
 import { RoleGuard } from '../guards/role.guard';
+import { GuestGuard } from '../guards/guest.guard';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -27,8 +28,8 @@ export const routes: Routes = [
 
   { path: 'sobre-mi', component: SobreMi },
   { path: 'contacto', component: Contacto },
-  { path: 'registro', component: Register },
-  { path: 'login', component: Login },
+  { path: 'registro', component: Register, canActivate: [GuestGuard] },
+  { path: 'login', component: Login, canActivate: [GuestGuard] },
   { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
 
   // 🛡️ PROTECCIÓN PARA ADMIN

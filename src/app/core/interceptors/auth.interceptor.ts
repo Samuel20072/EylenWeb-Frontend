@@ -1,37 +1,51 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
+  HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  // Si utilizas un AuthService, inyéctalo aquí. 
-  // Usaremos localStorage por simplicidad en este ejemplo.
-  constructor() {} 
+  constructor(private router: Router, private injector: Injector) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    
-    // 1. Obtener el token (ajusta esto si usas un servicio de autenticación)
-    const authToken = localStorage.getItem('token'); 
+    // Use Injector to avoid circular dependency: AuthService -> HttpClient -> AuthInterceptor -> AuthService
+    const authService = this.injector.get(AuthService);
+    const authToken = localStorage.getItem('token');
 
-    // 2. Clonar la solicitud y adjuntar el token si existe
+    // Clone the request and attach the token if it exists
     if (authToken) {
-      const authRequest = request.clone({
+      request = request.clone({
         setHeaders: {
-          // Utiliza 'Bearer' si tu backend lo espera (es el estándar JWT)
-          Authorization: `Bearer ${authToken}` 
+          Authorization: `Bearer ${authToken}`
         }
       });
-      // 3. Pasar la solicitud clonada con el encabezado
-      return next.handle(authRequest);
     }
 
-    // 4. Si no hay token, pasar la solicitud original
-    return next.handle(request);
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          // Token expired or invalid
+          authService.logout(); // Clean up state
+
+          // Check current URL to decide where to redirect
+          // User requirement: if on admin page and token expires, go to home (inicio)
+          if (this.router.url.includes('/admin')) {
+            this.router.navigate(['/']);
+          } else {
+            this.router.navigate(['/login']);
+          }
+        }
+        return throwError(() => error);
+      })
+    );
   }
 }
