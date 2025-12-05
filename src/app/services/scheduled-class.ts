@@ -75,4 +75,14 @@ export class ScheduledClassesService {
   remove(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
   }
+
+  // Get user's scheduled classes
+  getMyScheduledClasses(): Observable<ScheduledClass[]> {
+    return this.http.get<ScheduledClass[]>(`${this.baseUrl}/my-classes`);
+  }
+
+  // Get available time slots for a specific date
+  getAvailableSlots(date: string): Observable<{ availableSlots: string[] }> {
+    return this.http.get<{ availableSlots: string[] }>(`${this.baseUrl}/available-slots?date=${date}`);
+  }
 }

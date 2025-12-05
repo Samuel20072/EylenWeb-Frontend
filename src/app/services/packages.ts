@@ -32,6 +32,8 @@ export interface PackagePurchase {
     user?: { id: number; email: string; full_name: string };
     // [NUEVO CAMPO]: Contexto útil para el administrador
     userHasActiveClasses?: boolean;
+    // [NUEVO CAMPO]: Sesiones restantes calculadas por el backend
+    remainingSessions?: number;
 }
 
 // DTO para la CREACIÓN de Paquetes
